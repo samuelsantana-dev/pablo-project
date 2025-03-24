@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import '../../styles.css';
+import { RegisterPatient } from '../../api/routesPacientes';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -10,24 +11,7 @@ export function RegistrationPatient() {
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
-
-  useEffect(() => {
-    const savedData = localStorage.getItem('userFormData');
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setName(parsedData.name || '');
-      setEmail(parsedData.email || '');
-      setPhone(parsedData.phone || '');
-      setBirthdate(parsedData.birthdate || '');
-      setHeight(parsedData.height || '');
-      setWeight(parsedData.weight || '');
-    }
-  }, []);
-
-  useEffect(() => {
-    const formData = { name, email, phone, birthdate, height, weight };
-    localStorage.setItem('userFormData', JSON.stringify(formData));
-  }, [name, email, phone, birthdate, height, weight]);
+  const [cpf, setCpf] = useState('');
 
   useEffect(() => {
     if (birthdate) {
@@ -49,12 +33,19 @@ export function RegistrationPatient() {
     return age;
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data = { name, email, phone, birthdate, age, height, weight };
+    const data = { name, email, phone, birthdate, age, height, cpf, weight };
     console.log(data);
-    alert('Formulário enviado com sucesso!');
+    try {
+      
+     await  RegisterPatient({data});
+     alert('Formulário enviado com sucesso!');
     handleReset();
+    } catch (error) {
+      console.error('Erro ao enviar o formulário:', error);
+      alert('Erro ao enviar o formulário. Tente novamente.');
+    }
   };
 
   const handleReset = () => {
@@ -65,6 +56,7 @@ export function RegistrationPatient() {
     setAge('');
     setHeight('');
     setWeight('');
+    setCpf('');
     localStorage.removeItem('userFormData');
   };
 
@@ -170,6 +162,21 @@ export function RegistrationPatient() {
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 placeholder="Peso em kg"
+                className="input-field"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <Col md={6}>
+            <Form.Group controlId="cpf">
+              <Form.Label className="form-label">Cpf (kg):</Form.Label>
+              <Form.Control
+                type="number"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+                placeholder="Cpf"
                 className="input-field"
               />
             </Form.Group>
