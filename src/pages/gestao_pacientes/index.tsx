@@ -6,19 +6,19 @@ import {
   ListGroup,
 } from 'react-bootstrap';
 import './PatientManagement.css';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export function PatientManagement() {
   const [searchName, setSearchName] = useState('');
   const [searchCpf, setSearchCpf] = useState('');
-  const [searchResults, setSearchResults] = useState<string[]>([]); // Altere o tipo conforme necessário
+  const [searchResults, setSearchResults] = useState<string[]>([]);
 
   const handleSearch = () => {
-    // Aqui você adicionaria a lógica para pesquisar pacientes
-    // e atualizar searchResults com os resultados.
-    // Exemplo simulado:
     const results = [`Resultado para ${searchName} e ${searchCpf}`];
     setSearchResults(results);
   };
+
+  const navigate = useNavigate();
 
   return (
     <Container className="mt-4">
@@ -63,7 +63,7 @@ export function PatientManagement() {
           <Button
             variant="success"
             id="add-patient-btn"
-            onClick={() => (window.location.href = 'cadastro_paciente.html')}
+            onClick={() => navigate('/cadastro-paciente')}
           >
             ➕ Cadastrar Paciente
           </Button>
@@ -71,7 +71,7 @@ export function PatientManagement() {
         <section className="text-center">
           <Button
             variant="info"
-            onClick={() => (window.location.href = 'avaliacao_sarcopenia.html')}
+            onClick={() => navigate('/avaliacao-sarcopenia')}
           >
             Avaliação de Sarcopenia
           </Button>
