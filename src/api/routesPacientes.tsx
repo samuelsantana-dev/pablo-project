@@ -1,9 +1,9 @@
 const urlApi = 'http://localhost:1337/api/pacientes';
 
-export async function getPatients() {
+export async function GetPatients() {
     const response = await fetch(urlApi);
     const pacientes = await response.json();
-    return pacientes.data;
+return pacientes.data;
 }
 
 export async function RegisterPatient(data: any){
