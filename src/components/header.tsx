@@ -1,9 +1,31 @@
-export function Header(){
-    return(
-        <div className="navbar bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md p-4">
-            <div className="flex-1">
-                <a className="btn btn-ghost text-2xl text-white font-bold">Sistema</a>
-            </div>
-        </div>
-    )
+import { Link } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+
+export function Header() {
+  return (
+    <Navbar expand="lg" bg="dark" variant="dark" className="mb-4">
+      <Container>
+        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4">
+          Sistema de Gestão
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link as={Link} to="/" className="px-3 text-white">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/gestao-pacientes" className="px-3 text-white">
+              Gestão de Pacientes
+            </Nav.Link>
+            <Nav.Link as={Link} to="/cadastro-paciente" className="px-3 text-white">
+              Cadastrar Paciente
+            </Nav.Link>
+            <Nav.Link as={Link} to="/avaliacao-sarcopenia" className="px-3 text-white">
+              Avaliação de Sarcopenia
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 }
