@@ -20,7 +20,7 @@ export function Header() {
             <Nav.Link as={Link} to="/cadastro-paciente" className="px-3 text-white">
               Cadastrar Paciente
             </Nav.Link>
-            <Nav.Link as={Link} to="/avaliacao-sarcopenia" className="px-3 text-white">
+            <Nav.Link as={Link} to="/laudo-sarcopenia" className="px-3 text-white">
               Avaliação de Sarcopenia
             </Nav.Link>
           </Nav>
