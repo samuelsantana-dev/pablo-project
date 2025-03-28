@@ -144,10 +144,10 @@ export function RegistrationPatient() {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center min-vh-100">
+    <Container className="d-flex justify-content-center align-items-center">
       <Form
         onSubmit={handleSubmit}
-        className="w-75 p-5 bg-white shadow-lg rounded border border-0 form-container"
+        className="w-100 w-md-75 p-4 p-md-5 bg-white shadow-lg rounded border border-0 form-container"
       >
         <h2 className="text-center mb-4 text-primary">Cadastro de Paciente</h2>
 
