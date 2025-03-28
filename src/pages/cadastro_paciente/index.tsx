@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import '../../styles.css';
 import { RegisterPatient } from '../../api/routesPacientes';
+import SelectInput from '../../components/select_input';
+import CheckboxGroup from '../../components/checkbox_group';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -12,6 +14,48 @@ export function RegistrationPatient() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [cpf, setCpf] = useState('');
+  const [formData, setFormData] = useState({
+    selectedOption: '',
+    selectedOptions: [] as string[],});
+    const personalBackground = [ //Antecedentes pessoais
+      { value: 'cardiorespiratory_disease', label: 'Doença cardiorrespiratória' },
+      { value: 'intestinal_constipation', label: 'Constipação intestinal' },
+      { value: 'kidney_disease', label: 'Doença renal' },
+      { value: 'hemorrhoids', label: 'Hemorroidas' },
+      { value: 'neoplasms', label: 'Neoplasias' },
+      { value: 'urinary_infection', label: 'Infecção urinária' },
+      { value: 'urinary_incontinence', label: 'Incontinência urinária' },
+      { value: 'heart_disease', label: 'Cardiopatia' },
+      { value: 'obesity', label: 'Obesidade' },
+      { value: 'allergies', label: 'Alergias' },
+      { value: 'hypertension', label: 'HAS' },
+      { value: 'diabetes', label: 'DM' },
+      { value: 'other', label: 'Outros' }
+    ];
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox') {
+      setFormData(prevData => {
+        // Para checkboxes, atualizamos o array selectedOptions
+        const newValues = checked
+          ? [...prevData.selectedOptions, value]
+          : prevData.selectedOptions.filter(v => v !== value);
+        
+        return {
+          ...prevData,
+          selectedOptions: newValues,
+        };
+      });
+    } else {
+      // Para outros inputs (text, select, etc.)
+      setFormData(prevData => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
 
   useEffect(() => {
     if (birthdate) {
@@ -32,6 +76,7 @@ export function RegistrationPatient() {
     }
     return age;
   };
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -182,6 +227,15 @@ export function RegistrationPatient() {
             </Form.Group>
           </Col>
         </Row>
+
+      <CheckboxGroup 
+          label="Escolha múltiplas opções"
+          name="selectedOptions"
+          values={formData.selectedOptions}
+          onChange={handleChange}
+          options={personalBackground}
+          inline
+        />
 
         <div className="d-flex justify-content-between mt-3">
           <Button type="submit" variant="primary" className="w-48 custom-btn">
