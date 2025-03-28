@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import '../../styles.css';
 import { RegisterPatient } from '../../api/routesPacientes';
-import SelectInput from '../../components/select_input';
+import CheckboxListInput from '../../components/checkbox_list';
 import CheckboxGroup from '../../components/checkbox_group';
 
 export function RegistrationPatient() {
@@ -14,6 +14,13 @@ export function RegistrationPatient() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [cpf, setCpf] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string>('');
+
+  const handleSelectionChange = (newSelectedValue: string) => {
+    setSelectedOption(newSelectedValue);  };
+
+
   const [formData, setFormData] = useState({
     selectedOption: '',
     selectedOptions: [] as string[],});
@@ -31,6 +38,12 @@ export function RegistrationPatient() {
       { value: 'hypertension', label: 'HAS' },
       { value: 'diabetes', label: 'DM' },
       { value: 'other', label: 'Outros' }
+    ];
+
+    const sleepOptions = [
+      { value: 'good', label: 'Bom' },
+      { value: 'regular', label: 'Regular' },
+      { value: 'bad', label: 'Ruim' }
     ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,12 +242,20 @@ export function RegistrationPatient() {
         </Row>
 
       <CheckboxGroup 
-          label="Escolha múltiplas opções"
+          label="Antecedentes Pessoais"
           name="selectedOptions"
           values={formData.selectedOptions}
           onChange={handleChange}
           options={personalBackground}
           inline
+        />
+
+        <CheckboxListInput
+         label="Sono"
+         name="myRadioGroup"
+         options={sleepOptions}
+         selectedValue={selectedOption}
+         onChange={handleSelectionChange}
         />
 
         <div className="d-flex justify-content-between mt-3">
