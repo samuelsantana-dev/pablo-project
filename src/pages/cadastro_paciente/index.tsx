@@ -14,12 +14,32 @@ export function RegistrationPatient() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [cpf, setCpf] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [selectedOptionSleep, setSelectedOptionSleep] = useState<string>('');
+  const [selectedOptionVision, setSelectedOptionVision] = useState<string>('');
+  const [selectedOptionHearing, setSelectedOptionHearing] = useState<string>('');
+  const [selectedOptionAlcoholic, setSelectedOptionAlcoholic] = useState<string>('');
+  const [selectedOptionSmoker, setSelectedOptionSmoker] = useState<string>('');
+  // const [selectedOption, setSelectedOption] = useState<string>('');
 
-  const handleSelectionChange = (newSelectedValue: string) => {
-    setSelectedOption(newSelectedValue);  };
+  const handleSelectionChangeAlcoholic = (newSelectedValue: string) => {
+    setSelectedOptionAlcoholic(newSelectedValue);
+    };
 
+    const handleSelectionChangeSmoker = (newSelectedValue: string) => {
+      setSelectedOptionSmoker(newSelectedValue);
+      };
+  
+    const handleSelectionChangeHearing = (newSelectedValue: string) => {
+      setSelectedOptionHearing(newSelectedValue);
+      };
+
+    const handleSelectionChangeVision = (newSelectedValue: string) => {
+      setSelectedOptionVision(newSelectedValue);
+      };
+
+      const handleSelectionChangeSleep = (newSelectedValue: string) => {
+        setSelectedOptionSleep(newSelectedValue);
+        };
 
   const [formData, setFormData] = useState({
     selectedOption: '',
@@ -40,10 +60,15 @@ export function RegistrationPatient() {
       { value: 'other', label: 'Outros' }
     ];
 
-    const sleepOptions = [
+    const listOptions = [
       { value: 'good', label: 'Bom' },
       { value: 'regular', label: 'Regular' },
       { value: 'bad', label: 'Ruim' }
+    ];
+
+    const yesNoOptions = [
+      { value: 'yes', label: 'Sim' },
+      { value: 'no', label: 'Não' },
     ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -252,10 +277,42 @@ export function RegistrationPatient() {
 
         <CheckboxListInput
          label="Sono"
-         name="myRadioGroup"
-         options={sleepOptions}
-         selectedValue={selectedOption}
-         onChange={handleSelectionChange}
+         name="myRadioGroupSleep"
+         options={listOptions}
+         selectedValue={selectedOptionSleep}
+         onChange={handleSelectionChangeSleep}
+        />
+
+      <CheckboxListInput
+         label="Visão"
+         name="myRadioGroupVision"
+         options={listOptions}
+         selectedValue={selectedOptionVision}
+         onChange={handleSelectionChangeVision}
+        />
+
+        <CheckboxListInput
+         label="Audição"
+         name="myRadioGroupHearing"
+         options={listOptions}
+         selectedValue={selectedOptionHearing}
+         onChange={handleSelectionChangeHearing}
+        /> 
+
+        <CheckboxListInput
+         label="Fumante"
+         name="myRadioGroupSmoker"
+         options={yesNoOptions}
+         selectedValue={selectedOptionSmoker}
+         onChange={handleSelectionChangeSmoker}
+        />
+
+         <CheckboxListInput
+         label="Etilista"
+         name="myRadioGroupAlcoholic"
+         options={yesNoOptions}
+         selectedValue={selectedOptionAlcoholic}
+         onChange={handleSelectionChangeAlcoholic}
         />
 
         <div className="d-flex justify-content-between mt-3">

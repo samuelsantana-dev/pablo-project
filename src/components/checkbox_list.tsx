@@ -16,7 +16,7 @@ interface RadioGroupProps {
 
 const CheckboxListInput = ({ label, name, options, selectedValue, onChange }: RadioGroupProps) => {
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value); // Atualiza o valor selecionado
+    onChange(e.target.value);
   };
 
   return (
