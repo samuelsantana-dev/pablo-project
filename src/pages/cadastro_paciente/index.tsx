@@ -4,6 +4,7 @@ import '../../styles.css';
 import { RegisterPatient } from '../../api/routesPacientes';
 import CheckboxListInput from '../../components/checkbox_list';
 import CheckboxGroup from '../../components/checkbox_group';
+import { personalBackground, listOptions, yesNoOptions, specificListMedicines } from '../../list-option/options';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -19,57 +20,26 @@ export function RegistrationPatient() {
   const [selectedOptionHearing, setSelectedOptionHearing] = useState<string>('');
   const [selectedOptionAlcoholic, setSelectedOptionAlcoholic] = useState<string>('');
   const [selectedOptionSmoker, setSelectedOptionSmoker] = useState<string>('');
-  // const [selectedOption, setSelectedOption] = useState<string>('');
-
-  const handleSelectionChangeAlcoholic = (newSelectedValue: string) => {
-    setSelectedOptionAlcoholic(newSelectedValue);
-    };
-
-    const handleSelectionChangeSmoker = (newSelectedValue: string) => {
-      setSelectedOptionSmoker(newSelectedValue);
-      };
+  const [medicines, setMedicines] = useState<string>('');
+  const [specificMedicines, setSpecificMedicines] = useState<string>('');
+  const [physicalActivity, setPhysicalActivity] = useState<string>('');
+  const [fallHistory, setFallHistory] = useState<string>('');
+  const [reason, setReason] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
   
-    const handleSelectionChangeHearing = (newSelectedValue: string) => {
-      setSelectedOptionHearing(newSelectedValue);
-      };
-
-    const handleSelectionChangeVision = (newSelectedValue: string) => {
-      setSelectedOptionVision(newSelectedValue);
-      };
-
-      const handleSelectionChangeSleep = (newSelectedValue: string) => {
-        setSelectedOptionSleep(newSelectedValue);
-        };
+  const handlesetsetFallHistorychange = (e: string) => setFallHistory(e);
+  const handlesetPhysicalActivitychange = (e: string) => setPhysicalActivity(e);
+  const handleSpecificMedicineschange = (e: string) => setSpecificMedicines(e);
+  const handleSelectionChangeAlcoholic = (e: string) => setSelectedOptionAlcoholic(e);
+  const handleSelectionChangeSmoker = (e: string) => setSelectedOptionSmoker(e);
+  const handleSelectionChangeHearing = (e: string) => setSelectedOptionHearing(e);
+  const handleSelectionChangeVision = (e: string) => setSelectedOptionVision(e);
+  const handleSelectionChangeSleep = (e: string) => setSelectedOptionSleep(e);
+  
 
   const [formData, setFormData] = useState({
     selectedOption: '',
     selectedOptions: [] as string[],});
-    const personalBackground = [ //Antecedentes pessoais
-      { value: 'cardiorespiratory_disease', label: 'Doença cardiorrespiratória' },
-      { value: 'intestinal_constipation', label: 'Constipação intestinal' },
-      { value: 'kidney_disease', label: 'Doença renal' },
-      { value: 'hemorrhoids', label: 'Hemorroidas' },
-      { value: 'neoplasms', label: 'Neoplasias' },
-      { value: 'urinary_infection', label: 'Infecção urinária' },
-      { value: 'urinary_incontinence', label: 'Incontinência urinária' },
-      { value: 'heart_disease', label: 'Cardiopatia' },
-      { value: 'obesity', label: 'Obesidade' },
-      { value: 'allergies', label: 'Alergias' },
-      { value: 'hypertension', label: 'HAS' },
-      { value: 'diabetes', label: 'DM' },
-      { value: 'other', label: 'Outros' }
-    ];
-
-    const listOptions = [
-      { value: 'good', label: 'Bom' },
-      { value: 'regular', label: 'Regular' },
-      { value: 'bad', label: 'Ruim' }
-    ];
-
-    const yesNoOptions = [
-      { value: 'yes', label: 'Sim' },
-      { value: 'no', label: 'Não' },
-    ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -314,6 +284,77 @@ export function RegistrationPatient() {
          selectedValue={selectedOptionAlcoholic}
          onChange={handleSelectionChangeAlcoholic}
         />
+
+        <div>
+        <h4 className="form-label">Medicamentos</h4>
+          <Form.Group controlId="medicines">
+              <Form.Label className="form-label">Medicamentos em uso:</Form.Label>
+              <Form.Control
+                type="text"
+                value={medicines}
+                onChange={(e) => setMedicines(e.target.value)}
+                placeholder="Liste os medicamentos em uso"
+                required
+                className="input-field"
+              />
+            </Form.Group>
+
+            <CheckboxListInput
+                label="Medicamentos especificos"
+                name="specificMedicines"
+                options={specificListMedicines}
+                selectedValue={specificMedicines}
+                onChange={handleSpecificMedicineschange}
+              />
+        </div>
+
+        <div>
+        <h5>Você pratica algum tipo de atividade física?
+        </h5>
+            <CheckboxListInput
+                label="Atividade Física"
+                name="physicalActivity"
+                options={yesNoOptions}
+                selectedValue={physicalActivity}
+                onChange={handlesetPhysicalActivitychange}
+              />
+        </div>
+
+        <div>
+        <h5>Sofreu alguma queda nos últimos 12 meses?
+        </h5>
+            <CheckboxListInput
+                label="Histórico de Quedas?"
+                name="physicalActivity"
+                options={yesNoOptions}
+                selectedValue={fallHistory}
+                onChange={handlesetsetFallHistorychange}
+              />
+        </div>
+
+        <Form.Group controlId="medicines">
+              <Form.Label className="form-label">Motivo:              </Form.Label>
+              <Form.Control
+                type="text"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                placeholder="Liste os medicamentos em uso"
+                required
+                className="input-field"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="location">
+              <Form.Label className="form-label">Local:</Form.Label>
+              <Form.Control
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Informe o local"
+                required
+                className="input-field"
+              />
+            </Form.Group>
 
         <div className="d-flex justify-content-between mt-3">
           <Button type="submit" variant="primary" className="w-48 custom-btn">
