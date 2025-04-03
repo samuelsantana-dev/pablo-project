@@ -55,7 +55,7 @@ export function SarcopeniaAssessment() {
     setLaudo(
       <Card>
         <Card.Body>
-          <Card.Title>Laudo Fisioterapêutico</Card.Title>
+          <Card.Title>Relatório da Avaliação</Card.Title>
           <p>
             <strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf
           </p>
@@ -95,7 +95,7 @@ export function SarcopeniaAssessment() {
 
   return (
     <Container className="mt-4">
-      <h1>Avaliação e Laudo de Sarcopenia</h1>
+      <h1>Avaliação de Sarcopenia</h1>
       <Card className="form-container">
         <Card.Body>
           <Form id="formulario">
