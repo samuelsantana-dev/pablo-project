@@ -14,38 +14,32 @@ export function Home() {
 
   if (showWelcome) {
     return (
-<<<<<<< HEAD
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <h1>Bem-vindo ao SaRCTesT</h1>
-        <p>Escolha uma opção:</p>
-        <button onClick={() => navigate("/cadastro-paciente")}>Cadastro de Pacientes</button>
-        <button onClick={() => navigate("/gestao-pacientes")}>Gestão de Pacientes</button>
-        <button onClick={() => navigate("/laudo-sarcopenia")}>Avaliação de Sarcopenia</button>
-      </div>
-    );
-  }
-=======
-      <Container className="d-flex vh-100 justify-content-center align-items-center bg-light">
-        <h1 className="text-primary fw-bold">Bem-vindo ao Sistema!</h1>
-        <Spinner animation="border" variant="primary" className="ms-3" />
+      <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <h1 className="text-primary">Bem-vindo ao SaRCTesT</h1>
+        <p className="text-muted">Carregando...</p>
+        <Spinner animation="border" role="status" />
       </Container>
     );
   }
 
   return (
-    <Container className="d-flex vh-100 justify-content-center align-items-center bg-light">
-      <Card className="p-4 shadow-lg text-center w-50">
+    <Container className="mt-5">
+      <Card className="p-4 text-center shadow">
         <Card.Body>
-          <Card.Title className="fs-3 fw-bold text-primary">Bem-vindo ao Sistema</Card.Title>
-          <Card.Text className="text-muted">Escolha uma opção:</Card.Text>
-          <div className="d-grid gap-3">
-            <Button variant="primary" size="lg" onClick={() => navigate("/cadastro-paciente")}>Cadastro de Pacientes</Button>
-            <Button variant="success" size="lg" onClick={() => navigate("/gestao-pacientes")}>Gestão de Pacientes</Button>
-            <Button variant="warning" size="lg" onClick={() => navigate("/laudo-sarcopenia")}>Laudo de Sarcopenia</Button>
+          <h2>Escolha uma opção:</h2>
+          <div className="d-grid gap-2 mt-3">
+            <Button variant="primary" size="lg" onClick={() => navigate("/cadastro-paciente")}>
+              Cadastro de Pacientes
+            </Button>
+            <Button variant="success" size="lg" onClick={() => navigate("/gestao-pacientes")}>
+              Gestão de Pacientes
+            </Button>
+            <Button variant="warning" size="lg" onClick={() => navigate("/laudo-sarcopenia")}>
+              Avaliação de Sarcopenia
+            </Button>
           </div>
         </Card.Body>
       </Card>
     </Container>
   );
 }
->>>>>>> 46727ad (Nova pagina de login e home e atualizações de paginas)

@@ -35,69 +35,55 @@ export function SarcopeniaAssessment() {
     const criterios: string[] = [];
 
     if ((sexo === 'Masculino' && forcaPreensao < 27) || (sexo === 'Feminino' && forcaPreensao < 16)) {
-      criterios.push('Este valor é sugestivo de sarcopenia. 
-                     Procure um profissional da saúde para avaliação completa." (Valor de referência 27kg para Homens e 16 kg para Mulheres');
+      criterios.push('Força de preensão abaixo do valor de referência (27kg para homens, 16kg para mulheres). Pode indicar sarcopenia.');
     }
+
     if ((sexo === 'Masculino' && massaMagraAjustada < 6.0) || (sexo === 'Feminino' && massaMagraAjustada < 5.0)) {
       criterios.push('Índice de Massa Magra (IMMA) abaixo do esperado.');
     }
-    if (equilibrioUnipodal < 30) {
+
+    if (equilibrioUnipodal < 10) {
       criterios.push('Equilíbrio Unipodal menor que 10 segundos.');
     }
-    if (sentarLevantar > 15) {
-      criterios.push("Tempo acima do recomendado. Possível fraqueza muscular e sarcopenia. 
-                     Procure um profissional da saúde para avaliação completa." (Valor de referência abaixo de 15 segundos).');
-    }
-    if (sentarLevantar < 15) {
-      criterios.push("Tempo dentro do esperado." (Recomendado abaixo de 15 segundos).');
-    }
-    if ((sexo === 'Masculino' && panturrilha < 31) || (sexo === 'Feminino' && panturrilha < 30)) {
-  criterios.push("Medida abaixo do recomendado. Pode indicar baixa massa muscular. 
-                 Procure um profissional da saúde para avaliação completa." ( Valor recomendado 31cm Masc./ 30cm Fem);
-} else if ((sexo === 'Masculino' && panturrilha >= 31) || (sexo === 'Feminino' && panturrilha >= 30)) {
-  criterios.push("Medida dentro da normalidade.");
-}
 
-    const sarcopenia = criterios.length > 0;
+    if (sentarLevantar > 15) {
+      criterios.push('Tempo acima do recomendado (mais de 15 segundos). Possível fraqueza muscular.');
+    } else {
+      criterios.push('Tempo dentro do esperado (abaixo de 15 segundos).');
+    }
+
+    if ((sexo === 'Masculino' && panturrilha < 31) || (sexo === 'Feminino' && panturrilha < 30)) {
+      criterios.push('Circunferência da panturrilha abaixo do recomendado (31cm para homens, 30cm para mulheres). Pode indicar baixa massa muscular.');
+    } else {
+      criterios.push('Circunferência da panturrilha dentro da normalidade.');
+    }
+
+    const sarcopenia = criterios.some(item => item.includes('abaixo') || item.includes('fraqueza') || item.includes('menor'));
 
     setLaudo(
-      <Card>
+      <Card className="mt-4">
         <Card.Body>
-<<<<<<< HEAD
-          <Card.Title>Relatório da Avaliação</Card.Title>
-=======
-          <Card.Title>Avaliação Fisioterapêutico</Card.Title>
->>>>>>> 46727ad (Nova pagina de login e home e atualizações de paginas)
-          <p>
-            <strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf
-          </p>
-          <p>
-            <strong>Massa Magra:</strong> {massaMagra} kg, índice ajustado: {massaMagraAjustada.toFixed(2)} kg/m²
-          </p>
-          <p>
-            <strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} segundos
-          </p>
-          <p>
-            <strong>Sentar e Levantar:</strong> {sentarLevantar} segundos
-          </p>
-          <p>
-            <strong>Circunferência da Panturrilha:</strong> {panturrilha} cm
-          </p>
-          <p>
-            <strong>Sexo:</strong> {sexo}
-          </p>
+          <Card.Title>Avaliação Fisioterapêutica</Card.Title>
+          <p><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</p>
+          <p><strong>Massa Magra:</strong> {massaMagra} kg, índice ajustado: {massaMagraAjustada.toFixed(2)} kg/m²</p>
+          <p><strong>Estatura:</strong> {estatura} cm</p>
+          <p><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} segundos</p>
+          <p><strong>Sentar e Levantar:</strong> {sentarLevantar} segundos</p>
+          <p><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</p>
+          <p><strong>Sexo:</strong> {sexo}</p>
           {sarcopenia ? (
             <Alert variant="danger">
-              Conclusão: Os resultados indicam <strong>risco de sarcopenia</strong>.
+              <strong>Conclusão:</strong> Risco de <strong>sarcopenia</strong> identificado.
               <br />
-              Itens fora dos parâmetros esperados:
               <ul>{criterios.map((criterio, index) => <li key={index}>{criterio}</li>)}</ul>
               Procure um profissional de saúde para acompanhamento.
             </Alert>
           ) : (
             <Alert variant="success">
-              Conclusão: Os resultados estão <strong>dentro dos parâmetros normais</strong>.
-              Continue com hábitos saudáveis!
+              <strong>Conclusão:</strong> Todos os parâmetros estão dentro da normalidade.
+              <br />
+              <ul>{criterios.map((criterio, index) => <li key={index}>{criterio}</li>)}</ul>
+              Mantenha hábitos saudáveis!
             </Alert>
           )}
         </Card.Body>
@@ -107,94 +93,49 @@ export function SarcopeniaAssessment() {
 
   return (
     <Container className="mt-4">
-      <h1>Avaliação de Sarcopenia</h1>
+      <h1 className="mb-4">Avaliação de Sarcopenia</h1>
       <Card className="form-container">
         <Card.Body>
-          <Form id="formulario">
-            <Form.Group>
+          <Form>
+            <Form.Group className="mb-3">
               <Form.Label>Força de Preensão Manual (kgf):</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.1"
-                placeholder="Ex: 28"
-                value={forcaPreensao}
-                onChange={(e) => setForcaPreensao(parseFloat(e.target.value))}
-                required
-              />
+              <Form.Control type="number" value={forcaPreensao ?? ''} onChange={(e) => setForcaPreensao(parseFloat(e.target.value))} />
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Massa Magra (kg):</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.1"
-                placeholder="Ex: 45"
-                value={massaMagra}
-                onChange={(e) => setMassaMagra(parseFloat(e.target.value))}
-                required
-              />
+              <Form.Control type="number" value={massaMagra ?? ''} onChange={(e) => setMassaMagra(parseFloat(e.target.value))} />
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Estatura (cm):</Form.Label>
-              <Form.Control
-                type="number"
-                min="100"
-                step="1"
-                placeholder="Ex: 170"
-                value={estatura}
-                onChange={(e) => setEstatura(parseFloat(e.target.value))}
-                required
-              />
+              <Form.Control type="number" value={estatura ?? ''} onChange={(e) => setEstatura(parseFloat(e.target.value))} />
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Equilíbrio Unipodal (segundos):</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.1"
-                placeholder="Ex: 12"
-                value={equilibrioUnipodal}
-                onChange={(e) => setEquilibrioUnipodal(parseFloat(e.target.value))}
-                required
-              />
+              <Form.Control type="number" value={equilibrioUnipodal ?? ''} onChange={(e) => setEquilibrioUnipodal(parseFloat(e.target.value))} />
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Sentar e Levantar (segundos, 5 repetições):</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.1"
-                placeholder="Ex: 15"
-                value={sentarLevantar}
-                onChange={(e) => setSentarLevantar(parseFloat(e.target.value))}
-                required
-              />
+
+            <Form.Group className="mb-3">
+              <Form.Label>Sentar e Levantar (5 repetições):</Form.Label>
+              <Form.Control type="number" value={sentarLevantar ?? ''} onChange={(e) => setSentarLevantar(parseFloat(e.target.value))} />
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Circunferência da Panturrilha (cm):</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.1"
-                placeholder="Ex: 32"
-                value={panturrilha}
-                onChange={(e) => setPanturrilha(parseFloat(e.target.value))}
-                required
-              />
+              <Form.Control type="number" value={panturrilha ?? ''} onChange={(e) => setPanturrilha(parseFloat(e.target.value))} />
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Sexo:</Form.Label>
-              <Form.Control as="select" value={sexo} onChange={(e) => setSexo(e.target.value)} required>
+              <Form.Select value={sexo} onChange={(e) => setSexo(e.target.value)}>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
-              </Form.Control>
+              </Form.Select>
             </Form.Group>
-<<<<<<< HEAD
-            <Button variant="primary" onClick={gerarLaudo}>Gerar Relatório</Button>
-=======
+
             <Button variant="primary" onClick={gerarLaudo}>Gerar Avaliação</Button>
->>>>>>> 46727ad (Nova pagina de login e home e atualizações de paginas)
           </Form>
         </Card.Body>
       </Card>
