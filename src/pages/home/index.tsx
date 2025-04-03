@@ -5,11 +5,11 @@ export function Home() {
   
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <h1>Bem-vindo ao Sistema</h1>
+        <h1>Bem-vindo ao SaRCTesT</h1>
         <p>Escolha uma opção:</p>
         <button onClick={() => navigate("/cadastro-paciente")}>Cadastro de Pacientes</button>
         <button onClick={() => navigate("/gestao-pacientes")}>Gestão de Pacientes</button>
-        <button onClick={() => navigate("/laudo-sarcopenia")}>Laudo de Sarcopenia</button>
+        <button onClick={() => navigate("/laudo-sarcopenia")}>Avaliação de Sarcopenia</button>
       </div>
     );
   }
