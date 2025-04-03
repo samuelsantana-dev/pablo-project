@@ -34,21 +34,29 @@ export function SarcopeniaAssessment() {
     const massaMagraAjustada = massaMagra / ((estatura / 100) ** 2);
     const criterios: string[] = [];
 
-    if ((sexo === 'Masculino' && forcaPreensao < 26) || (sexo === 'Feminino' && forcaPreensao < 16)) {
-      criterios.push('Força de Preensão Manual abaixo do esperado.');
+    if ((sexo === 'Masculino' && forcaPreensao < 27) || (sexo === 'Feminino' && forcaPreensao < 16)) {
+      criterios.push('Este valor é sugestivo de sarcopenia. 
+                     Procure um profissional da saúde para avaliação completa." (Valor de referência 27kg para Homens e 16 kg para Mulheres');
     }
     if ((sexo === 'Masculino' && massaMagraAjustada < 6.0) || (sexo === 'Feminino' && massaMagraAjustada < 5.0)) {
       criterios.push('Índice de Massa Magra (IMMA) abaixo do esperado.');
     }
-    if (equilibrioUnipodal < 10) {
+    if (equilibrioUnipodal < 30) {
       criterios.push('Equilíbrio Unipodal menor que 10 segundos.');
     }
-    if (sentarLevantar < 12) {
-      criterios.push('Tempo para Sentar e Levantar abaixo do esperado (menos de 12 segundos).');
+    if (sentarLevantar > 15) {
+      criterios.push("Tempo acima do recomendado. Possível fraqueza muscular e sarcopenia. 
+                     Procure um profissional da saúde para avaliação completa." (Valor de referência abaixo de 15 segundos).');
+    }
+    if (sentarLevantar < 15) {
+      criterios.push("Tempo dentro do esperado." (Recomendado abaixo de 15 segundos).');
     }
     if ((sexo === 'Masculino' && panturrilha < 31) || (sexo === 'Feminino' && panturrilha < 30)) {
-      criterios.push('Circunferência da Panturrilha abaixo do esperado.');
-    }
+  criterios.push("Medida abaixo do recomendado. Pode indicar baixa massa muscular. 
+                 Procure um profissional da saúde para avaliação completa." ( Valor recomendado 31cm Masc./ 30cm Fem);
+} else if ((sexo === 'Masculino' && panturrilha >= 31) || (sexo === 'Feminino' && panturrilha >= 30)) {
+  criterios.push("Medida dentro da normalidade.");
+}
 
     const sarcopenia = criterios.length > 0;
 
@@ -178,7 +186,7 @@ export function SarcopeniaAssessment() {
                 <option value="Feminino">Feminino</option>
               </Form.Control>
             </Form.Group>
-            <Button variant="primary" onClick={gerarLaudo}>Gerar Laudo</Button>
+            <Button variant="primary" onClick={gerarLaudo}>Gerar Relatório</Button>
           </Form>
         </Card.Body>
       </Card>
