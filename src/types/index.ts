@@ -1,6 +1,7 @@
 export interface InterfacePatientRegistration {
     id: number;
     name: string;
+    
     email: string;
     phone: string;
     birthdate: string;

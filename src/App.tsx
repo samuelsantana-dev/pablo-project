@@ -6,13 +6,15 @@ import { SarcopeniaAssessment } from "./pages/laudo_sarcopenia/laudo_sarcopenia"
 import { RegistrationPatient } from "./pages/cadastro_paciente";
 import { PatientManagement } from "./pages/gestao_pacientes";
 import { Home } from "./pages/home";
+import { Login } from "./pages/login/login";
 
 function App() {
   return (
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
+         <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/cadastro-paciente" element={<RegistrationPatient />} />
         <Route path="/gestao-pacientes" element={<PatientManagement />} />
         <Route path="/laudo-sarcopenia" element={<SarcopeniaAssessment />} />

@@ -6,7 +6,7 @@ import {
   Alert,
   Card,
 } from 'react-bootstrap';
-import './SarcopeniaAssessment.css'; // Importe seu CSS
+import './SarcopeniaAssessment.css';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>(undefined);
@@ -63,7 +63,11 @@ export function SarcopeniaAssessment() {
     setLaudo(
       <Card>
         <Card.Body>
+<<<<<<< HEAD
           <Card.Title>Relatório da Avaliação</Card.Title>
+=======
+          <Card.Title>Avaliação Fisioterapêutico</Card.Title>
+>>>>>>> 46727ad (Nova pagina de login e home e atualizações de paginas)
           <p>
             <strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf
           </p>
@@ -186,7 +190,11 @@ export function SarcopeniaAssessment() {
                 <option value="Feminino">Feminino</option>
               </Form.Control>
             </Form.Group>
+<<<<<<< HEAD
             <Button variant="primary" onClick={gerarLaudo}>Gerar Relatório</Button>
+=======
+            <Button variant="primary" onClick={gerarLaudo}>Gerar Avaliação</Button>
+>>>>>>> 46727ad (Nova pagina de login e home e atualizações de paginas)
           </Form>
         </Card.Body>
       </Card>
