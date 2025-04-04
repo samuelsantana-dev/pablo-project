@@ -11,7 +11,7 @@ import './SarcopeniaAssessment.css';
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>(undefined);
   const [tug, setTug] = useState<number | undefined>(undefined);
-  const [estatura, setEstatura] = useState<number | undefined>(undefined);
+  const [anguloDeFase, setAnguloDeFase] = useState<number | undefined>(undefined);
   const [equilibrioUnipodal, setEquilibrioUnipodal] = useState<number | undefined>(undefined);
   const [sentarLevantar, setSentarLevantar] = useState<number | undefined>(undefined);
   const [panturrilha, setPanturrilha] = useState<number | undefined>(undefined);
@@ -22,7 +22,7 @@ export function SarcopeniaAssessment() {
     if (
       forcaPreensao === undefined ||
       tug === undefined ||
-      estatura === undefined ||
+      anguloDeFase === undefined ||
       equilibrioUnipodal === undefined ||
       sentarLevantar === undefined ||
       panturrilha === undefined
@@ -31,7 +31,7 @@ export function SarcopeniaAssessment() {
       return;
     }
 
-    const tugAjustada = tug / ((estatura / 100) ** 2);
+    const tugAjustada = tug / ((anguloDeFase / 100) ** 2);
     const criterios: string[] = [];
 
     if ((sexo === 'Masculino' && forcaPreensao < 27) || (sexo === 'Feminino' && forcaPreensao < 16)) {
@@ -66,7 +66,7 @@ export function SarcopeniaAssessment() {
           <Card.Title>Avaliação Fisioterapêutica</Card.Title>
           <p><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</p>
           <p><strong>Massa Magra:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</p>
-          <p><strong>Estatura:</strong> {estatura} cm</p>
+          <p><strong>Estatura:</strong> {anguloDeFase} cm</p>
           <p><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} segundos</p>
           <p><strong>Sentar e Levantar:</strong> {sentarLevantar} segundos</p>
           <p><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</p>
@@ -109,7 +109,7 @@ export function SarcopeniaAssessment() {
 
             <Form.Group className="mb-3">
               <Form.Label>Estatura (cm):</Form.Label>
-              <Form.Control type="number" value={estatura ?? ''} onChange={(e) => setEstatura(parseFloat(e.target.value))} />
+              <Form.Control type="number" value={anguloDeFase ?? ''} onChange={(e) => setAnguloDeFase(parseFloat(e.target.value))} />
             </Form.Group>
 
             <Form.Group className="mb-3">
