@@ -10,7 +10,7 @@ import './SarcopeniaAssessment.css';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>(undefined);
-  const [massaMagra, setMassaMagra] = useState<number | undefined>(undefined);
+  const [tug, setTug] = useState<number | undefined>(undefined);
   const [estatura, setEstatura] = useState<number | undefined>(undefined);
   const [equilibrioUnipodal, setEquilibrioUnipodal] = useState<number | undefined>(undefined);
   const [sentarLevantar, setSentarLevantar] = useState<number | undefined>(undefined);
@@ -21,7 +21,7 @@ export function SarcopeniaAssessment() {
   const gerarLaudo = () => {
     if (
       forcaPreensao === undefined ||
-      massaMagra === undefined ||
+      tug === undefined ||
       estatura === undefined ||
       equilibrioUnipodal === undefined ||
       sentarLevantar === undefined ||
@@ -31,14 +31,14 @@ export function SarcopeniaAssessment() {
       return;
     }
 
-    const massaMagraAjustada = massaMagra / ((estatura / 100) ** 2);
+    const tugAjustada = tug / ((estatura / 100) ** 2);
     const criterios: string[] = [];
 
     if ((sexo === 'Masculino' && forcaPreensao < 27) || (sexo === 'Feminino' && forcaPreensao < 16)) {
       criterios.push('Força de preensão abaixo do valor de referência (27kg para homens, 16kg para mulheres). Pode indicar sarcopenia.');
     }
 
-    if ((sexo === 'Masculino' && massaMagraAjustada < 6.0) || (sexo === 'Feminino' && massaMagraAjustada < 5.0)) {
+    if ((sexo === 'Masculino' && tugAjustada < 6.0) || (sexo === 'Feminino' && tugAjustada < 5.0)) {
       criterios.push('Índice de Massa Magra (IMMA) abaixo do esperado.');
     }
 
@@ -65,7 +65,7 @@ export function SarcopeniaAssessment() {
         <Card.Body>
           <Card.Title>Avaliação Fisioterapêutica</Card.Title>
           <p><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</p>
-          <p><strong>Massa Magra:</strong> {massaMagra} kg, índice ajustado: {massaMagraAjustada.toFixed(2)} kg/m²</p>
+          <p><strong>Massa Magra:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</p>
           <p><strong>Estatura:</strong> {estatura} cm</p>
           <p><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} segundos</p>
           <p><strong>Sentar e Levantar:</strong> {sentarLevantar} segundos</p>
@@ -104,7 +104,7 @@ export function SarcopeniaAssessment() {
 
             <Form.Group className="mb-3">
               <Form.Label>Massa Magra (kg):</Form.Label>
-              <Form.Control type="number" value={massaMagra ?? ''} onChange={(e) => setMassaMagra(parseFloat(e.target.value))} />
+              <Form.Control type="number" value={tug ?? ''} onChange={(e) => setTug(parseFloat(e.target.value))} />
             </Form.Group>
 
             <Form.Group className="mb-3">
