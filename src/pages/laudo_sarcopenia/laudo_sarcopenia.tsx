@@ -14,7 +14,7 @@ export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
   const [tug, setTug] = useState<number | undefined>();
   const [anguloDeFase, setAnguloDeFase] = useState<number | undefined>();
-  const [equilibrioUnipodal, setEquilibrioUnipodal] = useState<number | undefined>();
+  // const [equilibrioUnipodal, setEquilibrioUnipodal] = useState<number | undefined>();
   const [sentarLevantar, setSentarLevantar] = useState<number | undefined>();
   const [panturrilha, setPanturrilha] = useState<number | undefined>();
   const [sexo, setSexo] = useState('Masculino');
@@ -25,7 +25,7 @@ export function SarcopeniaAssessment() {
       forcaPreensao === undefined ||
       tug === undefined ||
       anguloDeFase === undefined ||
-      equilibrioUnipodal === undefined ||
+      // equilibrioUnipodal === undefined ||
       sentarLevantar === undefined ||
       panturrilha === undefined
     ) {
@@ -44,9 +44,9 @@ export function SarcopeniaAssessment() {
       criterios.push('Índice de Massa Magra (IMMA) abaixo do esperado.');
     }
 
-    if (equilibrioUnipodal < 10) {
-      criterios.push('Equilíbrio Unipodal menor que 10 segundos.');
-    }
+    // if (equilibrioUnipodal < 10) {
+    //   criterios.push('Equilíbrio Unipodal menor que 10 segundos.');
+    // }
 
     if (sentarLevantar > 15) {
       criterios.push('Tempo acima do recomendado. Possível fraqueza muscular.');
@@ -72,7 +72,7 @@ export function SarcopeniaAssessment() {
             <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
             <li><strong>Massa Magra:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
             <li><strong>Estatura:</strong> {anguloDeFase} cm</li>
-            <li><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} s</li>
+            {/* <li><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} s</li> */}
             <li><strong>Sentar e Levantar:</strong> {sentarLevantar} s</li>
             <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
             <li><strong>Sexo:</strong> {sexo}</li>
@@ -110,10 +110,10 @@ export function SarcopeniaAssessment() {
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                   <Form.Label>Equilíbrio Unipodal (s)</Form.Label>
                   <Form.Control type="number" value={equilibrioUnipodal ?? ''} onChange={(e) => setEquilibrioUnipodal(parseFloat(e.target.value))} />
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group className="mb-3">
                   <Form.Label>Sentar e Levantar (s)</Form.Label>
                   <Form.Control type="number" value={sentarLevantar ?? ''} onChange={(e) => setSentarLevantar(parseFloat(e.target.value))} />
