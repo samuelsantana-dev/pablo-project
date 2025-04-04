@@ -26,6 +26,9 @@ export function Header() {
             <Nav.Link as={Link} to="/laudo-sarcopenia" className="px-3 text-white">
               Avaliação de Sarcopenia
             </Nav.Link>
+            <Nav.Link as={Link} to="/sarc-form" className="px-3 text-white">
+              Avaliação Formulario
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

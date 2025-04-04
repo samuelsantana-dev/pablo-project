@@ -27,8 +27,10 @@ export function Login() {
         <Card.Body>
           <Card.Title className="fs-3 fw-bold text-primary">Sobre o Projeto</Card.Title>
           <Card.Text className="text-muted">
-            Este sistema foi desenvolvido para auxiliar no cadastro e gestão de pacientes, fornecendo também suporte para emissão de laudos de sarcopenia.
+            EInterface para avaliação de indicativo de sarcopenia em pessoas idosas.
           </Card.Text>
+          <Card.Text className="text-muted">
+          Rastreie a saúde muscular de forma eficiente.          </Card.Text>
         </Card.Body>
       </Card>
       
