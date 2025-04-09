@@ -100,7 +100,7 @@ export function SarcopeniaAssessment() {
                   <Form.Control type="number" value={forcaPreensao ?? ''} onChange={(e) => setForcaPreensao(parseFloat(e.target.value))} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Massa Magra (kg)</Form.Label>
+                  <Form.Label>Tug</Form.Label>
                   <Form.Control type="number" value={tug ?? ''} onChange={(e) => setTug(parseFloat(e.target.value))} />
                 </Form.Group>
                 <Form.Group className="mb-3">
