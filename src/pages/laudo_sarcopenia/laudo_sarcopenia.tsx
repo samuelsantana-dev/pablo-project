@@ -1,4 +1,6 @@
-import { useState } from 'react';
+// laudo_sarcopenia.tsx
+import { useState, useRef } from 'react';
+import html2pdf from 'html2pdf.js';
 import {
   Container,
   Form,
@@ -9,22 +11,21 @@ import {
   Col,
 } from 'react-bootstrap';
 
-export function SarcopeniaAssessment() {
+export function LaudoSarcopenia() {
+  const laudoRef = useRef<HTMLDivElement>(null);
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
   const [tug, setTug] = useState<number | undefined>();
   const [anguloDeFase, setAnguloDeFase] = useState<number | undefined>();
-  // const [equilibrioUnipodal, setEquilibrioUnipodal] = useState<number | undefined>();
   const [sentarLevantar, setSentarLevantar] = useState<number | undefined>();
   const [panturrilha, setPanturrilha] = useState<number | undefined>();
   const [sexo, setSexo] = useState('Masculino');
-  const [laudo, setLaudo] = useState<any>(null);
+  const [laudo, setLaudo] = useState<JSX.Element | null>(null);
 
   const gerarLaudo = () => {
     if (
       forcaPreensao === undefined ||
       tug === undefined ||
       anguloDeFase === undefined ||
-      // equilibrioUnipodal === undefined ||
       sentarLevantar === undefined ||
       panturrilha === undefined
     ) {
@@ -43,10 +44,6 @@ export function SarcopeniaAssessment() {
       criterios.push('Índice de Massa Magra (IMMA) abaixo do esperado.');
     }
 
-    // if (equilibrioUnipodal < 10) {
-    //   criterios.push('Equilíbrio Unipodal menor que 10 segundos.');
-    // }
-
     if (sentarLevantar > 15) {
       criterios.push('Tempo acima do recomendado. Possível fraqueza muscular.');
     } else {
@@ -64,27 +61,46 @@ export function SarcopeniaAssessment() {
     );
 
     setLaudo(
-      <Card className="mt-4 shadow-sm border-0">
-        <Card.Body>
-          <Card.Title className="text-center text-primary mb-3">Resultado da Avaliação</Card.Title>
-          <ul className="mb-3">
-            <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
-            <li><strong>Tug:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
-            <li><strong>Angulo de fase</strong> {anguloDeFase} cm</li>
-            {/* <li><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} s</li> */}
-            <li><strong>Sentar e Levantar:</strong> {sentarLevantar} s</li>
-            <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
-            <li><strong>Sexo:</strong> {sexo}</li>
-          </ul>
-          <Alert variant={sarcopenia ? 'danger' : 'success'}>
-            <strong>Conclusão:</strong> {sarcopenia
-              ? 'Risco de sarcopenia identificado.'
-              : 'Todos os parâmetros estão dentro da normalidade.'}
-            <ul className="mt-2">{criterios.map((c, i) => <li key={i}>{c}</li>)}</ul>
-          </Alert>
-        </Card.Body>
-      </Card>
+      <div ref={laudoRef}>
+        <Card className="mt-4 shadow-sm border-0">
+          <Card.Body>
+            <Card.Title className="text-center text-primary mb-3">Resultado da Avaliação</Card.Title>
+            <ul className="mb-3">
+              <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
+              <li><strong>TUG:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
+              <li><strong>Ângulo de Fase:</strong> {anguloDeFase} cm</li>
+              <li><strong>Sentar e Levantar:</strong> {sentarLevantar} s</li>
+              <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
+              <li><strong>Sexo:</strong> {sexo}</li>
+            </ul>
+            <Alert variant={sarcopenia ? 'danger' : 'success'}>
+              <strong>Conclusão:</strong> {sarcopenia
+                ? 'Risco de sarcopenia identificado.'
+                : 'Todos os parâmetros estão dentro da normalidade.'}
+              <ul className="mt-2">{criterios.map((c, i) => <li key={i}>{c}</li>)}</ul>
+            </Alert>
+          </Card.Body>
+        </Card>
+      </div>
     );
+  };
+
+  const gerarPDF = () => {
+    if (!laudoRef.current) {
+      alert("Por favor, gere a avaliação primeiro.");
+      return;
+    }
+
+    html2pdf()
+      .set({
+        margin: 10,
+        filename: 'avaliacao_sarcopenia.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      })
+      .from(laudoRef.current)
+      .save();
   };
 
   return (
@@ -100,19 +116,15 @@ export function SarcopeniaAssessment() {
                   <Form.Control type="number" value={forcaPreensao ?? ''} onChange={(e) => setForcaPreensao(parseFloat(e.target.value))} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Tug</Form.Label>
+                  <Form.Label>TUG</Form.Label>
                   <Form.Control type="number" value={tug ?? ''} onChange={(e) => setTug(parseFloat(e.target.value))} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Angulo de fase</Form.Label>
+                  <Form.Label>Ângulo de Fase</Form.Label>
                   <Form.Control type="number" value={anguloDeFase ?? ''} onChange={(e) => setAnguloDeFase(parseFloat(e.target.value))} />
                 </Form.Group>
               </Col>
               <Col md={6}>
-                {/* <Form.Group className="mb-3">
-                  <Form.Label>Equilíbrio Unipodal (s)</Form.Label>
-                  <Form.Control type="number" value={equilibrioUnipodal ?? ''} onChange={(e) => setEquilibrioUnipodal(parseFloat(e.target.value))} />
-                </Form.Group> */}
                 <Form.Group className="mb-3">
                   <Form.Label>Sentar e Levantar (s)</Form.Label>
                   <Form.Control type="number" value={sentarLevantar ?? ''} onChange={(e) => setSentarLevantar(parseFloat(e.target.value))} />
@@ -140,7 +152,16 @@ export function SarcopeniaAssessment() {
           </Form>
         </Card.Body>
       </Card>
+
       {laudo}
+
+      {laudo && (
+        <div className="text-center mt-3">
+          <Button variant="primary" onClick={gerarPDF}>
+            Baixar PDF
+          </Button>
+        </div>
+      )}
     </Container>
   );
 }
