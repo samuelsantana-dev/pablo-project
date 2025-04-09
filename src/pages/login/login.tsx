@@ -36,7 +36,7 @@ export function Login() {
     const existingUser = localStorage.getItem(`loggedInUser`);
 
     if (existingUser) {
-      setError("Usuário já cadastrado com este email.");
+      navigate("/");
       setSuccess("");
       return;
     }
@@ -47,9 +47,6 @@ export function Login() {
     setSuccess("Cadastro realizado com sucesso!");
     setError("");
 
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
   };
 
   if (showWelcome) {
@@ -77,7 +74,7 @@ export function Login() {
 
       <Card className="p-4 shadow-lg w-100 login-card">
         <Card.Body>
-          <Card.Title className="fs-4 fw-bold text-primary text-center mb-4">Cadastro</Card.Title>
+          <Card.Title className="fs-4 fw-bold text-primary text-center mb-4">Login</Card.Title>
 
           {error && <Alert variant="danger">{error}</Alert>}
           {success && <Alert variant="success">{success}</Alert>}
@@ -97,6 +94,7 @@ export function Login() {
             </Form.Group>
             <div className="d-grid">
               <Button variant="primary" type="submit">Login</Button>
+              <Button variant="primary" onClick={() => navigate("/cadastro-paciente")}>Cadastre-se</Button>
             </div>
           </Form>
         </Card.Body>
