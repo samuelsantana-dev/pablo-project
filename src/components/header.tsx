@@ -18,8 +18,6 @@ export function Header() {
     }
   }, [navigate]);
 
-  // if (!isLoggedIn) return null; 
-
   function handleLogout() {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("user");
@@ -42,15 +40,9 @@ export function Header() {
               <FaHome /> Home
             </Nav.Link>
 
-            {
-              !isLoggedIn && (
-                <Nav.Link as={Link} to="/cadastro-paciente" className="d-flex align-items-center gap-1 text-white">
+            <Nav.Link as={Link} to="/cadastro-paciente" className="d-flex align-items-center gap-1 text-white">
                 <FaUserPlus /> Cadastro
               </Nav.Link>
-              )
-            }
-            
-           
             {
               isLoggedIn && (
                 <Nav.Link as={Link} to="/gestao-pacientes" className="d-flex align-items-center gap-1 text-white">
@@ -65,16 +57,11 @@ export function Header() {
               <FaFileAlt /> SARC-FORM
             </Nav.Link>
 
-            {
-              !isLoggedIn && (
-                <Nav.Link as={Link} to="/login">
+            <Nav.Link as={Link} to="/login">
                 <Button variant="outline-info" className="d-flex align-items-center gap-2">
                   <FaSignInAlt /> Login
                 </Button>
               </Nav.Link>
-              )
-            }
-
             {
               isLoggedIn && (
                     <Button variant="outline-danger" onClick={handleLogout} className="d-flex align-items-center gap-2">
