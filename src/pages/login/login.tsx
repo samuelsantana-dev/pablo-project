@@ -31,7 +31,7 @@ export function Login() {
         <Card.Body>
           <Card.Title className="fs-3 fw-bold text-primary">Sobre o Projeto</Card.Title>
           <Card.Text className="text-muted">
-            Sistema para cadastro e gestão de pacientes, com emissão de laudos de sarcopenia.
+            Sistema para cadastro e gestão de pacientes, com emissão de Avaliação de sarcopenia.
           </Card.Text>
         </Card.Body>
       </Card>

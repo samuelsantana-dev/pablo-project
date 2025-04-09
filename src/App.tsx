@@ -14,8 +14,8 @@ function App() {
     <Router>
       <Header />
       <Routes>
-         <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
+         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
         <Route path="/sarc-form" element={<SarcFForm />} />
         <Route path="/cadastro-paciente" element={<RegistrationPatient />} />
         <Route path="/gestao-pacientes" element={<PatientManagement />} />
