@@ -1,8 +1,34 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { FaHome, FaUserPlus, FaSignInAlt, FaUserFriends, FaClipboardList, FaFileAlt } from 'react-icons/fa';
+import { FaHome, FaUserPlus, FaSignInAlt, FaUserFriends, FaClipboardList, FaFileAlt, FaSignOutAlt } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 export function Header() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    console.log('loggedInUser', loggedInUser);
+    if (loggedInUser) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  if (!isLoggedIn) return null; 
+
+  function handleLogout() {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    navigate("/login");
+  }
+
+  
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="shadow-sm mb-4">
       <Container>
@@ -15,23 +41,48 @@ export function Header() {
             <Nav.Link as={Link} to="/" className="d-flex align-items-center gap-1 text-white">
               <FaHome /> Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/gestao-pacientes" className="d-flex align-items-center gap-1 text-white">
-              <FaUserFriends /> Gestão de Pacientes
-            </Nav.Link>
-            <Nav.Link as={Link} to="/cadastro-paciente" className="d-flex align-items-center gap-1 text-white">
-              <FaUserPlus /> Cadastrar Paciente
-            </Nav.Link>
+
+            {
+              !isLoggedIn && (
+                <Nav.Link as={Link} to="/cadastro-paciente" className="d-flex align-items-center gap-1 text-white">
+                <FaUserPlus /> Cadastro
+              </Nav.Link>
+              )
+            }
+            
+           
+            {
+              isLoggedIn && (
+                <Nav.Link as={Link} to="/gestao-pacientes" className="d-flex align-items-center gap-1 text-white">
+                  <FaUserFriends /> Gestão de Pacientes
+                </Nav.Link>
+              )
+            }
             <Nav.Link as={Link} to="/laudo-sarcopenia" className="d-flex align-items-center gap-1 text-white">
               <FaClipboardList /> Avaliação de Sarcopenia
             </Nav.Link>
             <Nav.Link as={Link} to="/sarc-form" className="d-flex align-items-center gap-1 text-white">
               <FaFileAlt /> Formulário de Avaliação
             </Nav.Link>
-            <Nav.Link as={Link} to="/login">
-              <Button variant="outline-info" className="d-flex align-items-center gap-2">
-                <FaSignInAlt /> Login
-              </Button>
-            </Nav.Link>
+
+            {
+              !isLoggedIn && (
+                <Nav.Link as={Link} to="/login">
+                <Button variant="outline-info" className="d-flex align-items-center gap-2">
+                  <FaSignInAlt /> Login
+                </Button>
+              </Nav.Link>
+              )
+            }
+
+            {
+              isLoggedIn && (
+                    <Button variant="outline-danger" onClick={handleLogout} className="d-flex align-items-center gap-2">
+                      <FaSignOutAlt /> Sair
+                    </Button>
+              )
+            }
+            
           </Nav>
         </Navbar.Collapse>
       </Container>
