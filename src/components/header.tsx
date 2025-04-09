@@ -24,6 +24,7 @@ export function Header() {
   function handleLogout() {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("user");
+    localStorage.removeItem("userFormData");
     setIsLoggedIn(false);
     navigate("/login");
   }
