@@ -119,7 +119,7 @@ export function RegistrationPatient() {
      localStorage.setItem(`user`, JSON.stringify({ data }));
      alert('Formulário enviado com sucesso!');
     handleReset();
-    navigate('/questionario_sarc');
+    navigate('/laudo-sarcopenia');
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
       alert('Erro ao enviar o formulário. Tente novamente.');
