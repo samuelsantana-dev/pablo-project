@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import '../../styles.css';
-import { RegisterPatient } from '../../api/routesPacientes';
+// import { RegisterPatient } from '../../api/routesPacientes';
 import CheckboxListInput from '../../components/checkbox_list';
 import CheckboxGroup from '../../components/checkbox_group';
 import { personalBackground, listOptions, yesNoOptions, specificListMedicines } from '../../list-option/options';
+import { useNavigate } from 'react-router-dom';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -36,6 +37,7 @@ export function RegistrationPatient() {
   const handleSelectionChangeVision = (e: string) => setSelectedOptionVision(e);
   const handleSelectionChangeSleep = (e: string) => setSelectedOptionSleep(e);
   
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     selectedOption: '',
@@ -88,13 +90,36 @@ export function RegistrationPatient() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data = { name, email, phone, birthdate, age, height, cpf, weight };
+    // Todos esses dados tem que estar na tabela
+    const data = {
+      name,
+      email,
+      phone,
+      birthdate,
+      age,
+      height,
+      cpf,
+      weight,
+      sleep: selectedOptionSleep,
+      vision: selectedOptionVision,
+      hearing: selectedOptionHearing,
+      alcoholic: selectedOptionAlcoholic,
+      smoker: selectedOptionSmoker,
+      medicines,
+      specificMedicines: specificMedicines ? specificMedicines.split(',') : [],
+      physicalActivity,
+      fallHistory,
+      reason,
+      location
+    };    
     console.log(data);
     try {
       
-     await  RegisterPatient({data});
+    //  await  RegisterPatient({data});
+     localStorage.setItem(`user`, JSON.stringify({ data }));
      alert('Formulário enviado com sucesso!');
     handleReset();
+    navigate('/questionario_sarc');
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
       alert('Erro ao enviar o formulário. Tente novamente.');
@@ -110,6 +135,17 @@ export function RegistrationPatient() {
     setHeight('');
     setWeight('');
     setCpf('');
+    setSelectedOptionSleep('');
+    setSelectedOptionVision('');
+    setSelectedOptionHearing('');
+    setSelectedOptionAlcoholic('');
+    setSelectedOptionSmoker('');
+    setMedicines('');
+    setSpecificMedicines('');
+    setPhysicalActivity('');
+    setFallHistory('');
+    setReason('');
+    setLocation('');
     localStorage.removeItem('userFormData');
   };
 
@@ -300,7 +336,7 @@ export function RegistrationPatient() {
             </Form.Group>
 
             <CheckboxListInput
-                label="Medicamentos especificos"
+                label="Medicamentos especificos separe por ,"
                 name="specificMedicines"
                 options={specificListMedicines}
                 selectedValue={specificMedicines}
@@ -325,7 +361,7 @@ export function RegistrationPatient() {
         </h5>
             <CheckboxListInput
                 label="Histórico de Quedas?"
-                name="physicalActivity"
+                name="physicalActivityQ"
                 options={yesNoOptions}
                 selectedValue={fallHistory}
                 onChange={handlesetsetFallHistorychange}
