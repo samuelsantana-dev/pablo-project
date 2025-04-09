@@ -44,7 +44,8 @@ export function Login() {
     localStorage.setItem(`user`, JSON.stringify({ name, email, phone }));
     localStorage.setItem("loggedInUser", email);
 
-    setSuccess("Cadastro realizado com sucesso!");
+    setSuccess("Login realizado com sucesso!");
+    navigate("/");
     setError("");
 
   };
