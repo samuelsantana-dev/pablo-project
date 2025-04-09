@@ -15,7 +15,6 @@ export function Header() {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
-      navigate("/login");
     }
   }, [navigate]);
 
@@ -63,7 +62,7 @@ export function Header() {
               <FaClipboardList /> Avaliação de Sarcopenia
             </Nav.Link>
             <Nav.Link as={Link} to="/sarc-form" className="d-flex align-items-center gap-1 text-white">
-              <FaFileAlt /> Formulário de Avaliação
+              <FaFileAlt /> SARC-FORM
             </Nav.Link>
 
             {
