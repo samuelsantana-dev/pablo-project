@@ -137,23 +137,34 @@ export function PatientManagement() {
         <h1>Gestão de Pacientes</h1>
       </header>
       <main>
-        <Table responsive bordered>
+        <Table responsive bordered hover className="mt-4 text-center align-middle">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Telefone</th>
-              <th>Idade</th>
-              <th>Altura</th>
-              <th>Peso</th>
-              <th>sleep</th>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Idade</th>
+            <th>Altura</th>
+            <th>Peso</th>
+            <th>Sono</th>
+            <th>Visão</th>
+            <th>Audição</th>
+            <th>Alcoólatra</th>
+            <th>Fumante</th>
+            <th>Medicamentos</th>
+            <th>Medicamentos Específicos</th>
+            <th>Atividade Física</th>
+            <th>Histórico de Quedas</th>
+            <th>Motivo</th>
+            <th>Localização</th>
+            <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {pacientesTese.map((paciente) => (
+            {pacientesTese.map((paciente, index) => (
               <tr key={paciente.phone}>
-                 <td>id</td>
+                <td>{index + 1}</td>
                 <td>{paciente.name}</td>
                 <td>{paciente.email}</td>
                 <td>{paciente.phone}</td>
@@ -161,8 +172,24 @@ export function PatientManagement() {
                 <td>{paciente.height}</td>
                 <td>{paciente.weight}</td>
                 <td>{paciente.sleep}</td>
-                <td><button> Excluir</button></td>
-                <td><button> Editar</button></td>
+                <td>{paciente.vision}</td>
+                <td>{paciente.hearing}</td>
+                <td>{paciente.alcoholic}</td>
+                <td>{paciente.smoker}</td>
+                <td>{paciente.medicines}</td>
+                <td>{paciente.specificMedicines}</td>
+                <td>{paciente.physicalActivity}</td>
+                <td>{paciente.fallHistory}</td>
+                <td>{paciente.reason}</td>
+                <td>{paciente.location}</td>
+                <td>
+                  <Button variant="danger" size="sm" className="me-2">
+                    Excluir
+                  </Button>
+                  <Button variant="warning" size="sm">
+                    Editar
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
