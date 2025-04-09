@@ -105,7 +105,7 @@ export function SarcopeniaAssessment() {
                   <Form.Control type="number" value={tug ?? ''} onChange={(e) => setTug(parseFloat(e.target.value))} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Estatura (cm)</Form.Label>
+                  <Form.Label>Angulo de fase</Form.Label>
                   <Form.Control type="number" value={anguloDeFase ?? ''} onChange={(e) => setAnguloDeFase(parseFloat(e.target.value))} />
                 </Form.Group>
               </Col>
