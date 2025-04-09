@@ -88,7 +88,28 @@ export function RegistrationPatient() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data = { name, email, phone, birthdate, age, height, cpf, weight };
+    // Todos esses dados tem que estar na tabela
+    const data = {
+      name,
+      email,
+      phone,
+      birthdate,
+      age,
+      height,
+      cpf,
+      weight,
+      sleep: selectedOptionSleep,
+      vision: selectedOptionVision,
+      hearing: selectedOptionHearing,
+      alcoholic: selectedOptionAlcoholic,
+      smoker: selectedOptionSmoker,
+      medicines,
+      specificMedicines,
+      physicalActivity,
+      fallHistory,
+      reason,
+      location
+    };    
     console.log(data);
     try {
       
