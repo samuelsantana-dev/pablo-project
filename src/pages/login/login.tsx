@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  Container,
-  Button,
-  Card,
-  Spinner,
-  Form,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Button, Card, Spinner, Form, Image } from "react-bootstrap";
+import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
+import logo from "../../assets/logo.png";
+import "./login.css";
 
 export function Login() {
   const [showWelcome, setShowWelcome] = useState(true);
@@ -20,72 +15,49 @@ export function Login() {
 
   if (showWelcome) {
     return (
-      <Container className="d-flex vh-100 justify-content-center align-items-center bg-primary text-white">
-        <div className="text-center">
-          <h1 className="fw-bold mb-3 animate__animated animate__fadeInDown">
-            Bem-vindo ao Sistema!
-          </h1>
-          <Spinner animation="border" variant="light" />
-        </div>
+      <Container className="vh-100 d-flex flex-column justify-content-center align-items-center bg-welcome animate-fade-in">
+        <Image src={logo} alt="Logo" width={100} className="mb-4 animate-pop-in" />
+        <h1 className="text-primary fw-bold animate-slide-up">Bem-vindo ao Sistema!</h1>
+        <Spinner animation="border" variant="primary" className="mt-3" />
       </Container>
     );
   }
 
   return (
-    <Container className="d-flex flex-column justify-content-center align-items-center vh-100 bg-light px-3">
-      <Row className="w-100" style={{ maxWidth: "900px" }}>
-        <Col md={6} className="mb-4 mb-md-0">
-          <Card className="p-4 shadow-sm h-100">
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold text-primary">
-                Sobre o Projeto
-              </Card.Title>
-              <Card.Text className="text-muted mt-3">
-                Interface para avaliação do risco de sarcopenia em pessoas
-                idosas.
-              </Card.Text>
-              <Card.Text className="text-muted">
-                Rastreie a saúde muscular de forma eficiente e simplificada.
-              </Card.Text>
-              <Card.Text className="text-muted fst-italic small mt-4">
-                Preencha os dados ao lado para iniciar a avaliação.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
+    <Container fluid className="d-flex flex-column justify-content-center align-items-center min-vh-100 bg-login p-3 animate-fade-in">
+      <Image src={logo} alt="Logo" width={80} className="mb-4" />
 
-        <Col md={6}>
-          <Card className="p-4 shadow-sm">
-            <Card.Body>
-              <Card.Title className="fs-4 fw-bold text-center text-primary mb-4">
-                Acesso Rápido
-              </Card.Title>
-              <Form>
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Nome Completo</Form.Label>
-                  <Form.Control type="text" placeholder="Digite seu nome" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" placeholder="Digite seu email" />
-                </Form.Group>
-                <Form.Group className="mb-4" controlId="formPhone">
-                  <Form.Label>Telefone</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Digite seu telefone"
-                  />
-                </Form.Group>
-                <div className="d-grid">
-                  <Button variant="primary" type="submit">
-                    Iniciar Avaliação
-                  </Button>
-                </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      <Card className="p-4 shadow-lg text-center w-100 mb-4 login-card">
+        <Card.Body>
+          <Card.Title className="fs-3 fw-bold text-primary">Sobre o Projeto</Card.Title>
+          <Card.Text className="text-muted">
+            Sistema para cadastro e gestão de pacientes, com emissão de laudos de sarcopenia.
+          </Card.Text>
+        </Card.Body>
+      </Card>
+
+      <Card className="p-4 shadow-lg w-100 login-card">
+        <Card.Body>
+          <Card.Title className="fs-4 fw-bold text-primary text-center mb-4">Login</Card.Title>
+          <Form>
+            <Form.Group className="mb-3 d-flex align-items-center input-group-custom" controlId="formName">
+              <FaUser className="me-2 icon-lg text-secondary" />
+              <Form.Control type="text" placeholder="Digite seu nome" />
+            </Form.Group>
+            <Form.Group className="mb-3 d-flex align-items-center input-group-custom" controlId="formEmail">
+              <FaEnvelope className="me-2 icon-lg text-secondary" />
+              <Form.Control type="email" placeholder="Digite seu email" />
+            </Form.Group>
+            <Form.Group className="mb-4 d-flex align-items-center input-group-custom" controlId="formPhone">
+              <FaPhone className="me-2 icon-lg text-secondary" />
+              <Form.Control type="text" placeholder="Digite seu telefone" />
+            </Form.Group>
+            <div className="d-grid">
+              <Button variant="primary" type="submit">Cadastrar</Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
     </Container>
   );
 }
