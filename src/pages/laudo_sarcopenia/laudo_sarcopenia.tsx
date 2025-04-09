@@ -8,7 +8,6 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import './SarcopeniaAssessment.css';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
