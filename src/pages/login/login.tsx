@@ -33,7 +33,7 @@ export function Login() {
       return;
     }
 
-    const existingUser = localStorage.getItem(`user-${email}`);
+    const existingUser = localStorage.getItem(`loggedInUser`);
 
     if (existingUser) {
       setError("Usuário já cadastrado com este email.");
@@ -41,7 +41,7 @@ export function Login() {
       return;
     }
 
-    localStorage.setItem(`user-${email}`, JSON.stringify({ name, email, phone }));
+    localStorage.setItem(`user`, JSON.stringify({ name, email, phone }));
     localStorage.setItem("loggedInUser", email);
 
     setSuccess("Cadastro realizado com sucesso!");
