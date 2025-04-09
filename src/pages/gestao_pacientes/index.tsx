@@ -13,6 +13,7 @@ export function PatientManagement() {
   const [pacientes, setPacientes] = useState<InterfacePatientRegistration[]>([]);
   const navigate = useNavigate();
 
+  console.log('pacientes', pacientes);
   useEffect(() => {
     const fetchData = async () => {
       try {
