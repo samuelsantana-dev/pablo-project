@@ -48,7 +48,7 @@ export function Login() {
     setError("");
 
     setTimeout(() => {
-      navigate("/home");
+      navigate("/");
     }, 1500);
   };
 
