@@ -20,7 +20,7 @@ export function Home() {
         <Spinner animation="border" role="status" />
       </Container>
     );
-  }
+  } 
 
   return (
     <Container className="mt-5">

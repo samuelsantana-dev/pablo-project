@@ -70,8 +70,8 @@ export function SarcopeniaAssessment() {
           <Card.Title className="text-center text-primary mb-3">Resultado da Avaliação</Card.Title>
           <ul className="mb-3">
             <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
-            <li><strong>Massa Magra:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
-            <li><strong>Estatura:</strong> {anguloDeFase} cm</li>
+            <li><strong>Tug:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
+            <li><strong>Angulo de fase</strong> {anguloDeFase} cm</li>
             {/* <li><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} s</li> */}
             <li><strong>Sentar e Levantar:</strong> {sentarLevantar} s</li>
             <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
