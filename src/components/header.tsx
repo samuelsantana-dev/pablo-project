@@ -18,7 +18,7 @@ export function Header() {
     }
   }, [navigate]);
 
-  if (!isLoggedIn) return null; 
+  // if (!isLoggedIn) return null; 
 
   function handleLogout() {
     localStorage.removeItem("loggedInUser");
