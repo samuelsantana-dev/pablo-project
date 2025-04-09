@@ -11,10 +11,10 @@ export function Header() {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/" className="px-3 text-white">
+            <Nav.Link as={Link} to="/login" className="px-3 text-white">
               Login
             </Nav.Link>
-            <Nav.Link as={Link} to="/home" className="px-3 text-white">
+            <Nav.Link as={Link} to="/" className="px-3 text-white">
               Home
             </Nav.Link>
             <Nav.Link as={Link} to="/gestao-pacientes" className="px-3 text-white">
