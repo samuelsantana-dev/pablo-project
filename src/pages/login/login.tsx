@@ -36,7 +36,7 @@ export function Login() {
     const existingUser = localStorage.getItem(`loggedInUser`);
 
     if (existingUser) {
-      navigate("/");
+      navigate("/laudo-sarcopenia");
       setSuccess("");
       return;
     }
@@ -45,7 +45,7 @@ export function Login() {
     localStorage.setItem("loggedInUser", email);
 
     setSuccess("Login realizado com sucesso!");
-    navigate("/");
+    navigate("/laudo-sarcopenia");
     setError("");
 
   };
