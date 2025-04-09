@@ -136,9 +136,9 @@ export function PatientManagement() {
       <header className="text-center mb-4">
         <h1>Gestão de Pacientes</h1>
       </header>
-      <main>
-        <Table responsive bordered hover className="mt-4 text-center align-middle">
-          <thead>
+      <main style={{ maxHeight: "500px", overflowY: "auto" }}>
+        <Table responsive bordered hover className="mt-4 text-center align-middle" >
+          <thead style={{ position: 'sticky', top: 0, zIndex: 1 }}>
             <tr>
             <th>#</th>
             <th>Nome</th>
@@ -164,7 +164,15 @@ export function PatientManagement() {
           <tbody>
             {pacientesTese.map((paciente, index) => (
               <tr key={paciente.phone}>
-                <td>{index + 1}</td>
+                <td
+                  style={{
+                    position: "sticky",
+                    left: 0,
+                    zIndex: 1
+                  }}
+                >
+                  {index + 1}
+                </td>
                 <td>{paciente.name}</td>
                 <td>{paciente.email}</td>
                 <td>{paciente.phone}</td>
@@ -197,7 +205,7 @@ export function PatientManagement() {
       </main>
       <section id="add-patient" className="mb-4 text-center">
         <Button
-          variant="success"
+          variant="dark"
           id="add-patient-btn"
           onClick={() => navigate('/cadastro-paciente')}
         >
@@ -206,7 +214,7 @@ export function PatientManagement() {
       </section>
       <section className="text-center">
         <Button
-          variant="info"
+          variant="dark"
           onClick={() => navigate('/avaliacao-sarcopenia')}
         >
           Avaliação de Sarcopenia
