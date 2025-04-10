@@ -63,19 +63,78 @@ export function SarcopeniaAssessment() {
       item.includes('abaixo') || item.includes('fraqueza') || item.includes('menor')
     );
 
+    const userPatient = localStorage.getItem('user');
+    console.log('userPatient', userPatient);
+    let patientData = {} as {
+      name?: string;
+      email?: string;
+      phone?: string;
+      birthdate?: string;
+      age?: string;
+      height?: string;
+      cpf?: string;
+      weight?: string;
+      sleep?: string;
+      vision?: string;
+      hearing?: string;
+      alcoholic?: string;
+      smoker?: string;
+      medicines?: string;
+      specificMedicines?: string | string[];
+      physicalActivity?: string;
+      fallHistory?: string;
+      reason?: string;
+      location?: string;
+    };
+  
+    if (userPatient) {
+      patientData = JSON.parse(userPatient).data;
+      console.log('patientData', patientData);
+      console.log('name', patientData.name);
+    };
+
     setLaudo(
       <Card className="mt-4 shadow-sm border-0">
         <Card.Body>
           <Card.Title className="text-center text-primary mb-3">Resultado da Avaliação</Card.Title>
+    
+          <h5 className="mb-3 text-secondary">Informações do Paciente</h5>
+          <ul className="mb-4">
+            <li><strong>Nome:</strong> {patientData.name}</li>
+            <li><strong>Email:</strong> {patientData.email}</li>
+            <li><strong>Telefone:</strong> {patientData.phone}</li>
+            <li><strong>Data de Nascimento:</strong> {patientData.birthdate}</li>
+            <li><strong>Idade:</strong> {patientData.age}</li>
+            <li><strong>Altura:</strong> {patientData.height} cm</li>
+            <li><strong>Peso:</strong> {patientData.weight} kg</li>
+            <li><strong>CPF:</strong> {patientData.cpf}</li>
+            <li><strong>Qualidade do Sono:</strong> {patientData.sleep}</li>
+            <li><strong>Visão:</strong> {patientData.vision}</li>
+            <li><strong>Audição:</strong> {patientData.hearing}</li>
+            <li><strong>Alcoolismo:</strong> {patientData.alcoholic}</li>
+            <li><strong>Fumante:</strong> {patientData.smoker}</li>
+            <li><strong>Medicamentos:</strong> {patientData.medicines}</li>
+            <li><strong>Medicamentos Específicos:</strong> {
+              Array.isArray(patientData.specificMedicines)
+                ? patientData.specificMedicines.join(', ')
+                : patientData.specificMedicines
+            }</li>
+            <li><strong>Atividade Física:</strong> {patientData.physicalActivity}</li>
+            <li><strong>Histórico de Quedas:</strong> {patientData.fallHistory}</li>
+            <li><strong>Motivo da Avaliação:</strong> {patientData.reason}</li>
+            <li><strong>Local da Avaliação:</strong> {patientData.location}</li>
+          </ul>
+    
+          <h5 className="mb-3 text-secondary">Parâmetros Avaliados</h5>
           <ul className="mb-3">
             <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
             <li><strong>Tug:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
-            <li><strong>Angulo de fase</strong> {anguloDeFase} cm</li>
-            {/* <li><strong>Equilíbrio Unipodal:</strong> {equilibrioUnipodal} s</li> */}
+            <li><strong>Angulo de fase:</strong> {anguloDeFase} cm</li>
             <li><strong>Sentar e Levantar:</strong> {sentarLevantar} s</li>
             <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
             <li><strong>Sexo:</strong> {sexo}</li>
           </ul>
+    
           <Alert variant={sarcopenia ? 'danger' : 'success'}>
             <strong>Conclusão:</strong> {sarcopenia
               ? 'Risco de sarcopenia identificado.'
@@ -84,7 +143,7 @@ export function SarcopeniaAssessment() {
           </Alert>
         </Card.Body>
       </Card>
-    );
+    );    
   };
 
   return (
