@@ -175,6 +175,9 @@ export function SarcopeniaAssessment() {
               <Button variant="primary" onClick={gerarLaudo}>
                 Gerar Avaliação
               </Button>
+              <Button variant="primary" onClick={gerarLaudo}>
+                Exportar para pdf
+              </Button>
             </div>
           </Form>
         </Card.Body>

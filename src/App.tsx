@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
-import { SarcopeniaAssessment } from "./pages/laudo_sarcopenia";
+import { SarcopeniaAssessment } from "./pages/avaliacao_sarcopenia";
 import { RegistrationPatient } from "./pages/cadastro_paciente";
 import { PatientManagement } from "./pages/gestao_pacientes";
 import { Home } from "./pages/home";
