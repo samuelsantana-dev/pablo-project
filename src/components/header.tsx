@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 export function Header() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUser, setUser] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -18,7 +19,24 @@ export function Header() {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    const userPatient = localStorage.getItem("user");
+    if (userPatient) {
+      setUser(true);
+    } else {
+      setUser(false);
+    }
+  })
+
   function handleLogout() {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userFormData");
+    setIsLoggedIn(false);
+    navigate("/login");
+  }
+
+  function handleCleanUser() {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("user");
     localStorage.removeItem("userFormData");
@@ -40,22 +58,25 @@ export function Header() {
               <FaHome /> Home
             </Nav.Link>
 
-            <Nav.Link as={Link} to="/cadastro-paciente" className="d-flex align-items-center gap-1 text-white">
+             <Nav.Link as={Link} to="/cadastro-paciente" className="d-flex align-items-center gap-1 text-white">
                 <FaUserPlus /> Cadastro
               </Nav.Link>
             {
-              isLoggedIn && (
-                <Nav.Link as={Link} to="/gestao-pacientes" className="d-flex align-items-center gap-1 text-white">
-                  <FaUserFriends /> Gestão de Pacientes
-                </Nav.Link>
+              isUser && (
+                <>
+                  <Nav.Link as={Link} to="/laudo-sarcopenia" className="d-flex align-items-center gap-1 text-white">
+                    <FaClipboardList /> Avaliação de Sarcopenia
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/sarc-form" className="d-flex align-items-center gap-1 text-white">
+                    <FaFileAlt /> SARC-FORM
+                  </Nav.Link>
+                  <Button variant="outline-danger" onClick={handleCleanUser} className="d-flex align-items-center gap-2">
+                      <FaSignOutAlt /> Excluir Paciente
+                    </Button>
+                </>
               )
             }
-            <Nav.Link as={Link} to="/laudo-sarcopenia" className="d-flex align-items-center gap-1 text-white">
-              <FaClipboardList /> Avaliação de Sarcopenia
-            </Nav.Link>
-            <Nav.Link as={Link} to="/sarc-form" className="d-flex align-items-center gap-1 text-white">
-              <FaFileAlt /> SARC-FORM
-            </Nav.Link>
+            
 
             <Nav.Link as={Link} to="/login">
                 <Button variant="outline-info" className="d-flex align-items-center gap-2">
@@ -64,9 +85,14 @@ export function Header() {
               </Nav.Link>
             {
               isLoggedIn && (
+                <>
                     <Button variant="outline-danger" onClick={handleLogout} className="d-flex align-items-center gap-2">
                       <FaSignOutAlt /> Sair
                     </Button>
+                    <Nav.Link as={Link} to="/gestao-pacientes" className="d-flex align-items-center gap-1 text-white">
+                    <FaUserFriends /> Gestão de Pacientes
+                  </Nav.Link>
+                  </>
               )
             }
             
