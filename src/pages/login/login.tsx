@@ -36,7 +36,7 @@ export function Login() {
     const existingUser = localStorage.getItem(`loggedInUser`);
 
     if (existingUser) {
-      navigate("/laudo-sarcopenia");
+      navigate("/gestao-pacientes");
       setSuccess("");
       return;
     }
