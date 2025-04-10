@@ -37,4 +37,3 @@ export interface InterfacePatientRegistration {
       reason?: string;
       location?: string;
   }
-  

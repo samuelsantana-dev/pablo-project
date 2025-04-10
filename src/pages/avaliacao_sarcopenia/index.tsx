@@ -9,6 +9,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { InterfaceRegistration } from '../../types';
+import { AvaliacaoData, exportarAvaliacaoParaPDF } from '../../utils/exportarPdf';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
@@ -97,7 +98,7 @@ export function SarcopeniaAssessment() {
             <li><strong>Medicamentos Específicos:</strong> {
               Array.isArray(patientData.specificMedicines)
                 ? patientData.specificMedicines.join(', ')
-                : patientData.specificMedicines
+                : patientData.specificMedicines ?? ''
             }</li>
             <li><strong>Atividade Física:</strong> {patientData.physicalActivity}</li>
             <li><strong>Histórico de Quedas:</strong> {patientData.fallHistory}</li>
@@ -114,6 +115,28 @@ export function SarcopeniaAssessment() {
             <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
             <li><strong>Sexo:</strong> {sexo}</li>
           </ul>
+
+          <Button
+            variant="primary"
+            onClick={() =>
+              exportarAvaliacaoParaPDF({
+                sexo,
+                forcaPreensao,
+                tug,
+                anguloDeFase,
+                sentarLevantar,
+                panturrilha,
+                laudo,
+                ...patientData as AvaliacaoData,
+                specificMedicines: Array.isArray(patientData.specificMedicines)
+                  ? patientData.specificMedicines.join(', ')
+                  : patientData.specificMedicines ?? '',
+              })
+            }
+          >
+            Exportar para PDF
+          </Button>
+
     
           <Alert variant={sarcopenia ? 'danger' : 'success'}>
             <strong>Conclusão:</strong> {sarcopenia
@@ -174,9 +197,6 @@ export function SarcopeniaAssessment() {
             <div className="d-grid">
               <Button variant="primary" onClick={gerarLaudo}>
                 Gerar Avaliação
-              </Button>
-              <Button variant="primary" onClick={gerarLaudo}>
-                Exportar para pdf
               </Button>
             </div>
           </Form>

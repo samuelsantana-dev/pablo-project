@@ -36,6 +36,15 @@ export function PatientManagement() {
     fetchData();
   }, []);
 
+
+  const handleDelete = (phone: string) => {
+    const updatedPatients = pacientes.filter(p => p.phone !== phone);
+    setPacientes(updatedPatients);
+  
+    // Atualiza o localStorage
+    localStorage.setItem('table_management', JSON.stringify({ data: updatedPatients }));
+  };
+  
   return (
     <Container className="mt-4">
       <header className="text-center mb-4">
@@ -96,7 +105,8 @@ export function PatientManagement() {
                 <td>{paciente.reason}</td>
                 <td>{paciente.location}</td>
                 <td>
-                  <Button variant="danger" size="sm" className="me-2">
+                  <Button variant="danger" size="sm" className="me-2" onClick={() => handleDelete(paciente.phone!)}
+                  >
                     Excluir
                   </Button>
                   <Button variant="warning" size="sm">
