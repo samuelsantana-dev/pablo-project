@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import CheckboxGroup from '../../components/checkbox_group';
 import { InterfaceRegistration } from '../../types';
+import { exportarSarcFParaPDF } from '../../utils/exportarPdfSarc';
 
 interface Question {
   label: string;
@@ -171,6 +172,19 @@ export const SarcFForm: React.FC = () => {
               })}
             </ul>
           </div>
+          <Button
+              className="mt-3"
+              variant="secondary"
+              type="button"
+              onClick={() => {
+                if (result) {
+                  const parsed = JSON.parse(result);
+                  exportarSarcFParaPDF(patientData, parsed, questions);
+                }
+              }}
+            >
+              Exportar para PDF
+          </Button>
           </>
         );
       })()}
