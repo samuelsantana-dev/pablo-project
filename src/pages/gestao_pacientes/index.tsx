@@ -5,7 +5,6 @@ import {
   Table,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { GetPatients } from '../../api/routes_pacientes';
 import { InterfaceRegistration } from '../../types';
 import './PatientManagement.css';
 import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
@@ -18,9 +17,18 @@ export function PatientManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await GetPatients();
-        console.log('data', data);
-        setPacientes(data);
+        const data = localStorage.getItem('table_management');
+        let patientData: InterfaceRegistration[] = [];
+      
+        if (data) {
+          const parsed = JSON.parse(data).data;
+      
+          // Se for um objeto único, transforma em array
+          patientData = Array.isArray(parsed) ? parsed : [parsed];
+        }
+      
+        console.log('patientData', patientData);
+        setPacientes(patientData);
       } catch (error) {
         console.error('Error fetching patients:', error);
       }
