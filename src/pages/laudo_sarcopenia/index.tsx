@@ -8,6 +8,7 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
+import { InterfaceRegistration } from '../../types';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
@@ -65,32 +66,11 @@ export function SarcopeniaAssessment() {
 
     const userPatient = localStorage.getItem('user');
     console.log('userPatient', userPatient);
-    let patientData = {} as {
-      name?: string;
-      email?: string;
-      phone?: string;
-      birthdate?: string;
-      age?: string;
-      height?: string;
-      cpf?: string;
-      weight?: string;
-      sleep?: string;
-      vision?: string;
-      hearing?: string;
-      alcoholic?: string;
-      smoker?: string;
-      medicines?: string;
-      specificMedicines?: string | string[];
-      physicalActivity?: string;
-      fallHistory?: string;
-      reason?: string;
-      location?: string;
-    };
+    let patientData = {} as InterfaceRegistration;
   
     if (userPatient) {
       patientData = JSON.parse(userPatient).data;
       console.log('patientData', patientData);
-      console.log('name', patientData.name);
     };
 
     setLaudo(
@@ -164,7 +144,7 @@ export function SarcopeniaAssessment() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Angulo de fase</Form.Label>
-                  <Form.Control type="number" value={anguloDeFase ?? ''} onChange={(e) => setAnguloDeFase(parseFloat(e.target.value))} />
+                  <Form.Control type="text" value={anguloDeFase ?? ''} onChange={(e) => setAnguloDeFase(parseFloat(e.target.value))} />
                 </Form.Group>
               </Col>
               <Col md={6}>

@@ -1,3 +1,7 @@
-export function registrationSave({data}: any){
-    localStorage.setItem('registration_patient', data);
+export function registrationUserPatientSave({data}: any){
+    localStorage.setItem('user', data);
+}
+
+export function registrationAvaliationSave({data}: any){
+    localStorage.setItem('user', data);
 }

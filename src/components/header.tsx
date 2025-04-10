@@ -81,13 +81,18 @@ export function Header() {
           </>
         )}
 
-        <Nav.Item>
-          <Nav.Link as={Link} to="/login" className="p-0">
-            <Button variant="outline-info" className="d-flex align-items-center gap-2 w-100">
-              <FaSignInAlt /> Login
-            </Button>
-          </Nav.Link>
-        </Nav.Item>
+        {
+          !isLoggedIn && (
+            <Nav.Item>
+            <Nav.Link as={Link} to="/login" className="p-0">
+              <Button variant="outline-info" className="d-flex align-items-center gap-2 w-100">
+                <FaSignInAlt /> Login
+              </Button>
+            </Nav.Link>
+          </Nav.Item>
+          )
+        }
+     
 
         {isLoggedIn && (
           <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
