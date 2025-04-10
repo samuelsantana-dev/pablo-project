@@ -5,7 +5,7 @@ import {
   Table,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { GetPatients } from '../../api/routesPacientes';
+import { GetPatients } from '../../api/routes_pacientes';
 import { InterfaceRegistration } from '../../types';
 import './PatientManagement.css';
 import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
