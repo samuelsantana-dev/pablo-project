@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { GetPatients } from '../../api/routesPacientes';
 import { InterfacePatientRegistration } from '../../types';
 import './PatientManagement.css';
+import { exportarPacientesParaExcel } from '../../uteis/exportarParaExcel';
 
 export function PatientManagement() {
   const [pacientes, setPacientes] = useState<InterfacePatientRegistration[]>([]);
@@ -215,9 +216,9 @@ export function PatientManagement() {
       <section className="text-center">
         <Button
           variant="dark"
-          onClick={() => navigate('/avaliacao-sarcopenia')}
-        >
-          Avaliação de Sarcopenia
+          onClick={() => exportarPacientesParaExcel(pacientesTese)}
+       >
+          📁 Exportar para Excel
         </Button>
       </section>
     </Container>
