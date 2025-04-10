@@ -143,8 +143,16 @@ export function SarcopeniaAssessment() {
                   <Form.Control type="number" value={tug ?? ''} onChange={(e) => setTug(parseFloat(e.target.value))} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Angulo de fase</Form.Label>
-                  <Form.Control type="text" value={anguloDeFase ?? ''} onChange={(e) => setAnguloDeFase(parseFloat(e.target.value))} />
+                <Form.Label>Ângulo de Fase</Form.Label>
+                  <Form.Control
+                  type="number"
+                   step="0.01" // Isso permite inserir casas decimais
+                    value={anguloDeFase ?? ''}
+                     onChange={(e) => {
+                      const value = e.target.value;
+                        setAnguloDeFase(value === '' ? undefined : parseFloat(value));
+                        }}
+                       /> 
                 </Form.Group>
               </Col>
               <Col md={6}>
