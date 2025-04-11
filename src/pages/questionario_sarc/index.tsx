@@ -3,7 +3,6 @@ import { Button, Container } from 'react-bootstrap';
 import CheckboxGroup from '../../components/checkbox_group';
 import { InterfaceRegistration } from '../../types';
 import { exportarSarcFParaPDF } from '../../utils/exportarPdfSarc';
-import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
 
 interface Question {
   label: string;

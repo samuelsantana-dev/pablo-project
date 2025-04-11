@@ -64,7 +64,7 @@ export function PatientManagement() {
   return (
     <Container className="mt-4">
       <header className="text-center mb-4">
-        <h1>Gestão de Pacientes</h1>
+        <h1>SARCTests</h1>
       </header>
       <main style={{ maxHeight: "500px", overflowY: "auto" }}>
         <Table responsive bordered hover className="mt-4 text-center align-middle" >
