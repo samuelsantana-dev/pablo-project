@@ -49,7 +49,7 @@ export function Header() {
     <Navbar expand="lg" bg="dark" variant="dark" className="shadow-sm mb-4">
   <Container>
     <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-info">
-      🏥 Sistema de Gestão
+      🏥 SARCTesT
     </Navbar.Brand>
     <Navbar.Toggle aria-controls="navbar-nav" />
     <Navbar.Collapse id="navbar-nav">
