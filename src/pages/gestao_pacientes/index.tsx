@@ -13,7 +13,7 @@ export function PatientManagement() {
   const [pacientes, setPacientes] = useState<InterfaceRegistration[]>([]);
   const [dadosAvaliacaoState, setDadoAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
   const [sarcFResult, setSarcFResult] = useState<InterfaceSarcFAvaliacao[]>([]);
-
+ console.log(sarcFResult)
   const navigate = useNavigate();
 
   useEffect(() => {

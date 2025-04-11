@@ -55,9 +55,9 @@ export function Home() {
         <Col md={6} className="mb-4 mb-md-0">
           <h1 className="display-4 fw-bold">Bem-vindo ao Sistema de Gestão de Pacientes</h1>
           <p className="lead">
-            Cadastre pacientes, gerencie dados e acompanhe avaliações de saúde com facilidade.
-            Nossa plataforma foi desenvolvida para otimizar o gerenciamento de informações e
-            oferecer uma experiência intuitiva.
+          Interface para avaliação de indicativo de sarcopenia em pessoas idosas
+          Rastreie a saúde muscular de pessoas idosas.
+          Realize avaliações e obtenha resultados de forma rápida e prática.
           </p>
         </Col>
 
