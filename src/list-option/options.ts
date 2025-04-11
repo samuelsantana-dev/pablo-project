@@ -17,14 +17,14 @@ export const personalBackground = [ // Antecedentes pessoais
     
 
     export const listOptions = [
-      { value: 'Bom', label: 'Bom' },
+      { value: 'bom', label: 'Bom' },
       { value: 'regular', label: 'Regular' },
-      { value: 'Ruim', label: 'Ruim' }
+      { value: 'ruim', label: 'Ruim' }
     ];
 
     export const yesNoOptions = [
-      { value: 'Sim', label: 'Sim' },
-      { value: 'Não', label: 'Não' },
+      { value: 'sim', label: 'Sim' },
+      { value: 'não', label: 'Não' },
     ];
 
     export const specificListMedicines = [
