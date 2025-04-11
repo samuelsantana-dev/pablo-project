@@ -77,14 +77,6 @@ export function PatientManagement() {
     }
   };
 
-  const handleEdit = (phone: string) => {
-    navigate(`/editar-paciente/${phone}`);
-  };
-
-  const handleViewAssessments = (phone: string) => {
-    navigate(`/avaliacoes-paciente/${phone}`);
-  };
-
   if (loading) {
     return (
       <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
