@@ -17,7 +17,7 @@ export function PatientManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = localStorage.getItem('table_management');
+        const data = localStorage.getItem('patient_registration');
         const dadosAvaliacao = localStorage.getItem('dadosAvaliacao');
         let patientData: InterfaceRegistration[] = [];
         let dataDadosAvaliacao: InterfaceDadosAvaliacao[] = [];
@@ -47,7 +47,7 @@ export function PatientManagement() {
     setPacientes(updatedPatients);
     console.log('dadosAvaliacao', dadosAvaliacao);
     // Atualiza o localStorage
-    localStorage.setItem('table_management', JSON.stringify({ data: updatedPatients }));
+    localStorage.setItem('patient_registration', JSON.stringify({ data: updatedPatients }));
   };
   
   return (
