@@ -3,6 +3,7 @@ import { Button, Container, Alert, Card, Row, Col } from 'react-bootstrap';
 import CheckboxGroup from '../../components/checkbox_group';
 import { InterfaceRegistration } from '../../types';
 import { exportarSarcFParaPDF } from '../../utils/exportarPdfSarc';
+import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
 
 interface Question {
   label: string;
@@ -137,7 +138,7 @@ export const SarcFForm: React.FC = () => {
       date: new Date().toLocaleDateString(),
     };
 
-    localStorage.setItem('sarcFResult', JSON.stringify(resultData));
+    salvarNoLocalStorage('sarcFResult', resultData);
     setResult(resultData);
   };
 
