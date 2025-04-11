@@ -16,7 +16,6 @@ export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
   const [tug, setTug] = useState<number | undefined>();
   const [anguloDeFase, setAnguloDeFase] = useState<number | undefined>();
-  // const [equilibrioUnipodal, setEquilibrioUnipodal] = useState<number | undefined>();
   const [sentarLevantar, setSentarLevantar] = useState<number | undefined>();
   const [panturrilha, setPanturrilha] = useState<number | undefined>();
   const [sexo, setSexo] = useState('Masculino');
@@ -27,7 +26,6 @@ export function SarcopeniaAssessment() {
       forcaPreensao === undefined ||
       tug === undefined ||
       anguloDeFase === undefined ||
-      // equilibrioUnipodal === undefined ||
       sentarLevantar === undefined ||
       panturrilha === undefined
     ) {
@@ -38,42 +36,55 @@ export function SarcopeniaAssessment() {
     const tugAjustada = tug / ((anguloDeFase / 100) ** 2);
     const criterios: string[] = [];
 
+    // Avaliação força de preensão
     if ((sexo === 'Masculino' && forcaPreensao < 27) || (sexo === 'Feminino' && forcaPreensao < 16)) {
       criterios.push('Força de preensão abaixo do valor de referência. Pode indicar sarcopenia.');
-    }
-
-    if ((sexo === 'Masculino' && tugAjustada < 6.0) || (sexo === 'Feminino' && tugAjustada < 5.0)) {
-      criterios.push('Índice de Massa Magra (IMMA) abaixo do esperado.');
-    }
-
-    // if (equilibrioUnipodal < 10) {
-    //   criterios.push('Equilíbrio Unipodal menor que 10 segundos.');
-    // }
-
-    if (sentarLevantar > 15) {
-      criterios.push('Tempo acima do recomendado. Possível fraqueza muscular.');
     } else {
-      criterios.push('Tempo dentro do esperado.');
+      criterios.push('Força de preensão dentro do esperado.');
     }
 
+    // Avaliação TUG ajustado
+    if ((sexo === 'Masculino' && tugAjustada < 6.0) || (sexo === 'Feminino' && tugAjustada < 5.0)) {
+      criterios.push('Índice TUG ajustado abaixo do esperado. Pode indicar perda de massa muscular.');
+    } else {
+      criterios.push('Índice TUG ajustado dentro da normalidade.');
+    }
+
+    // Avaliação sentar e levantar
+    if (sentarLevantar > 15) {
+      criterios.push('Tempo no teste sentar-levantar acima do recomendado. Possível fraqueza muscular.');
+    } else {
+      criterios.push('Tempo no teste sentar-levantar dentro do esperado.');
+    }
+
+    // Avaliação panturrilha
     if ((sexo === 'Masculino' && panturrilha < 31) || (sexo === 'Feminino' && panturrilha < 30)) {
       criterios.push('Circunferência da panturrilha abaixo do recomendado.');
     } else {
       criterios.push('Circunferência da panturrilha dentro da normalidade.');
     }
 
+    // Avaliação ângulo de fase
+    let anguloFaseText = '';
+    if (anguloDeFase > 5.25) {
+      anguloFaseText = 'Ângulo de fase sugere baixo risco de sarcopenia.';
+    } else if (anguloDeFase < 4.54) {
+      anguloFaseText = 'Ângulo de fase sugere risco aumentado de sarcopenia. Avaliação adicional recomendada.';
+    } else {
+      anguloFaseText = 'Ângulo de fase dentro da faixa intermediária. Triagem adicional pode ser necessária.';
+    }
+    criterios.push(anguloFaseText);
+
     const sarcopenia = criterios.some(item =>
-      item.includes('abaixo') || item.includes('fraqueza') || item.includes('menor')
+      item.includes('abaixo') || item.includes('fraqueza') || item.includes('aumentado')
     );
 
     const userPatient = localStorage.getItem('user');
-    console.log('userPatient', userPatient);
     let patientData = {} as InterfaceRegistration;
   
     if (userPatient) {
       patientData = JSON.parse(userPatient).data;
-      console.log('patientData', patientData);
-    };
+    }
 
     const dados = {
       forcaPreensao,
@@ -122,34 +133,35 @@ export function SarcopeniaAssessment() {
           <h5 className="mb-3 text-secondary">Parâmetros Avaliados</h5>
           <ul className="mb-3">
             <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
-            <li><strong>Tug:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
-            <li><strong>Angulo de fase:</strong> {anguloDeFase} cm</li>
-            <li><strong>Sentar e Levantar:</strong> {sentarLevantar} s</li>
+            <li><strong>TUG:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
+            <li><strong>Ângulo de Fase:</strong> {anguloDeFase}°</li>
+            <li><strong>Teste Sentar e Levantar:</strong> {sentarLevantar} s</li>
             <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
             <li><strong>Sexo:</strong> {sexo}</li>
           </ul>
 
-          <Button
-            variant="primary"
-            onClick={() =>
-              exportarAvaliacaoParaPDF({
-                sexo,
-                forcaPreensao,
-                tug,
-                anguloDeFase,
-                sentarLevantar,
-                panturrilha,
-                laudo,
-                ...patientData as AvaliacaoData,
-                specificMedicines: Array.isArray(patientData.specificMedicines)
-                  ? patientData.specificMedicines.join(', ')
-                  : patientData.specificMedicines ?? '',
-              })
-            }
-          >
-            Exportar para PDF
-          </Button>
-
+          <div className="d-grid gap-2 mb-4">
+            <Button
+              variant="primary"
+              onClick={() =>
+                exportarAvaliacaoParaPDF({
+                  sexo,
+                  forcaPreensao,
+                  tug,
+                  anguloDeFase,
+                  sentarLevantar,
+                  panturrilha,
+                  laudo,
+                  ...patientData as AvaliacaoData,
+                  specificMedicines: Array.isArray(patientData.specificMedicines)
+                    ? patientData.specificMedicines.join(', ')
+                    : patientData.specificMedicines ?? '',
+                })
+              }
+            >
+              Exportar para PDF
+            </Button>
+          </div>
     
           <Alert variant={sarcopenia ? 'danger' : 'success'}>
             <strong>Conclusão:</strong> {sarcopenia
@@ -172,48 +184,75 @@ export function SarcopeniaAssessment() {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Força de Preensão (kgf)</Form.Label>
-                  <Form.Control type="number" value={forcaPreensao ?? ''} onChange={(e) => setForcaPreensao(parseFloat(e.target.value))} />
+                  <Form.Control 
+                    type="number" 
+                    value={forcaPreensao ?? ''} 
+                    onChange={(e) => setForcaPreensao(parseFloat(e.target.value))} 
+                    min="0"
+                    step="0.1"
+                  />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Tug</Form.Label>
-                  <Form.Control type="number" value={tug ?? ''} onChange={(e) => setTug(parseFloat(e.target.value))} />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                <Form.Label>Ângulo de Fase</Form.Label>
-                  <Form.Control
-                  type="number"
-                   step="0.01" // Isso permite inserir casas decimais
-                    value={anguloDeFase ?? ''}
-                     onChange={(e) => {
-                      const value = e.target.value;
-                        setAnguloDeFase(value === '' ? undefined : parseFloat(value));
-                        }}
-                       /> 
+                  <Form.Label>TUG (kg)</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    value={tug ?? ''} 
+                    onChange={(e) => setTug(parseFloat(e.target.value))} 
+                    min="0"
+                    step="0.1"
+                  />
                 </Form.Group>
               </Col>
               <Col md={6}>
-                {/* <Form.Group className="mb-3">
-                  <Form.Label>Equilíbrio Unipodal (s)</Form.Label>
-                  <Form.Control type="number" value={equilibrioUnipodal ?? ''} onChange={(e) => setEquilibrioUnipodal(parseFloat(e.target.value))} />
-                </Form.Group> */}
                 <Form.Group className="mb-3">
-                  <Form.Label>Sentar e Levantar (s)</Form.Label>
-                  <Form.Control type="number" value={sentarLevantar ?? ''} onChange={(e) => setSentarLevantar(parseFloat(e.target.value))} />
+                  <Form.Label>Teste Sentar e Levantar (s)</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    value={sentarLevantar ?? ''} 
+                    onChange={(e) => setSentarLevantar(parseFloat(e.target.value))} 
+                    min="0"
+                    step="0.1"
+                  />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Circunferência da Panturrilha (cm)</Form.Label>
-                  <Form.Control type="number" value={panturrilha ?? ''} onChange={(e) => setPanturrilha(parseFloat(e.target.value))} />
+                  <Form.Control 
+                    type="number" 
+                    value={panturrilha ?? ''} 
+                    onChange={(e) => setPanturrilha(parseFloat(e.target.value))} 
+                    min="0"
+                    step="0.1"
+                  />
                 </Form.Group>
               </Col>
             </Row>
 
-            <Form.Group className="mb-4">
-              <Form.Label>Sexo</Form.Label>
-              <Form.Select value={sexo} onChange={(e) => setSexo(e.target.value)}>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-              </Form.Select>
-            </Form.Group>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Ângulo de Fase (°)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    step="0.01"
+                    value={anguloDeFase ?? ''}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setAnguloDeFase(value === '' ? undefined : parseFloat(value));
+                    }}
+                    min="0"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Sexo</Form.Label>
+                  <Form.Select value={sexo} onChange={(e) => setSexo(e.target.value)}>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
 
             <div className="d-grid">
               <Button variant="primary" onClick={gerarLaudo}>
