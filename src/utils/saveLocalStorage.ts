@@ -1,6 +1,6 @@
-export function salvarNoLocalStorage(chave: string, dados: any): void {
+export function salvarNoLocalStorage(chave: string, data: object) {
     try {
-      const dadosFormatados = JSON.stringify({dados});
+      const dadosFormatados = JSON.stringify({ data });
       localStorage.setItem(chave, dadosFormatados);
     } catch (erro) {
       console.error('Erro ao salvar no localStorage:', erro);

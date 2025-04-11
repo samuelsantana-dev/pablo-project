@@ -37,6 +37,7 @@ export function Header() {
   }
 
   function handleCleanUser() {
+    localStorage.removeItem("user");
     localStorage.removeItem("dadosAvaliacao");
     localStorage.removeItem("sarcFResult")
     localStorage.removeItem("patient_registration")
