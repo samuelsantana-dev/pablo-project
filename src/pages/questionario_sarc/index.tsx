@@ -3,6 +3,7 @@ import { Button, Container } from 'react-bootstrap';
 import CheckboxGroup from '../../components/checkbox_group';
 import { InterfaceRegistration } from '../../types';
 import { exportarSarcFParaPDF } from '../../utils/exportarPdfSarc';
+import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
 
 interface Question {
   label: string;
@@ -91,7 +92,7 @@ export const SarcFForm: React.FC = () => {
       predicao,
     };
 
-    localStorage.setItem('sarcFResult', JSON.stringify(resultData, null, 2));
+    salvarNoLocalStorage('sarcFResult', resultData);
     setResult(JSON.stringify(resultData, null, 2));
     alert('Resultado salvo com sucesso!');
   };

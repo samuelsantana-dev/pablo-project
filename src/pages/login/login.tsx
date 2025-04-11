@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "../../assets/logo.png";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
+import { salvarNoLocalStorage, saveUnicData } from "../../utils/saveLocalStorage";
 
 export function Login() {
   const [showWelcome, setShowWelcome] = useState(true);
@@ -41,8 +42,8 @@ export function Login() {
       return;
     }
 
-    localStorage.setItem(`user`, JSON.stringify({ name, email, phone }));
-    localStorage.setItem("loggedInUser", email);
+    salvarNoLocalStorage('user', formData)
+    saveUnicData("loggedInUser", email)
 
     setSuccess("Login realizado com sucesso!");
     navigate("/laudo-sarcopenia");
@@ -103,3 +104,7 @@ export function Login() {
     </Container>
   );
 }
+function setSuccess(arg0: string) {
+  throw new Error("Function not implemented.");
+}
+

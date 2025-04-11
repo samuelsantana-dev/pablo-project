@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 import { InterfaceRegistration } from '../../types';
 import { AvaliacaoData, exportarAvaliacaoParaPDF } from '../../utils/exportarPdf';
+import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
@@ -83,8 +84,8 @@ export function SarcopeniaAssessment() {
       panturrilha,
       sexo,
     };
-  
-    localStorage.setItem('dadosAvaliacao', JSON.stringify(dados));
+    
+    salvarNoLocalStorage('dadosAvaliacao', dados);
 
     setLaudo(
       <Card className="mt-4 shadow-sm border-0">
