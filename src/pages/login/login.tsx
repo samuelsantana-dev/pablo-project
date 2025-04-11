@@ -104,7 +104,3 @@ export function Login() {
     </Container>
   );
 }
-function setSuccess(arg0: string) {
-  throw new Error("Function not implemented.");
-}
-
