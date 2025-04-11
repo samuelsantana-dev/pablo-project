@@ -74,6 +74,18 @@ export function SarcopeniaAssessment() {
       console.log('patientData', patientData);
     };
 
+    const dados = {
+      forcaPreensao,
+      tug,
+      tugAjustada: tugAjustada.toFixed(2),
+      anguloDeFase,
+      sentarLevantar,
+      panturrilha,
+      sexo,
+    };
+  
+    localStorage.setItem('dadosAvaliacao', JSON.stringify(dados));
+
     setLaudo(
       <Card className="mt-4 shadow-sm border-0">
         <Card.Body>
