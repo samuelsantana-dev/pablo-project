@@ -1,156 +1,185 @@
 import { useEffect, useState } from 'react';
-import {
-  Container,
-  Button,
-  Table,
-} from 'react-bootstrap';
+import { Container, Button, Table, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { InterfaceDadosAvaliacao, InterfaceRegistration, InterfaceSarcFAvaliacao } from '../../types';
-import './PatientManagement.css';
 import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
+import './PatientManagement.css';
 
 export function PatientManagement() {
   const [pacientes, setPacientes] = useState<InterfaceRegistration[]>([]);
-  const [dadosAvaliacaoState, setDadoAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
+  const [dadosAvaliacao, setDadosAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
   const [sarcFResult, setSarcFResult] = useState<InterfaceSarcFAvaliacao[]>([]);
- console.log(sarcFResult)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  console.log(dadosAvaliacao, sarcFResult)
+
+  // Columns configuration for the table
+  const columns = [
+    { key: 'name', label: 'Nome' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Telefone' },
+    { key: 'age', label: 'Idade' },
+    { key: 'height', label: 'Altura (cm)' },
+    { key: 'weight', label: 'Peso (kg)' },
+    { key: 'sleep', label: 'Sono' },
+    { key: 'vision', label: 'Visão' },
+    { key: 'hearing', label: 'Audição' },
+    { key: 'alcoholic', label: 'Alcoólatra' },
+    { key: 'smoker', label: 'Fumante' },
+    { key: 'medicines', label: 'Medicamentos' },
+    { key: 'specificMedicines', label: 'Med. Específicos' },
+    { key: 'physicalActivity', label: 'Atividade Física' },
+    { key: 'fallHistory', label: 'Quedas' },
+    { key: 'reason', label: 'Motivo' },
+    { key: 'location', label: 'Localização' },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = localStorage.getItem('patient_registration');
-        const dadosAvaliacao = localStorage.getItem('dadosAvaliacao');
-        const sarcFResult = localStorage.getItem('sarcFResult');
+        setLoading(true);
         
-        let patientData: InterfaceRegistration[] = [];
-        let dataDadosAvaliacao: InterfaceDadosAvaliacao[] = [];
-        let dataSarcFResult: InterfaceSarcFAvaliacao[] = [];
-      
-        if (data) {
-          const parsed = JSON.parse(data).data;
-          patientData = Array.isArray(parsed) ? parsed : [parsed];
-        }
+        // Load all data from localStorage
+        const patientData = loadLocalStorageData<InterfaceRegistration>('patient_registration');
+        const avaliacaoData = loadLocalStorageData<InterfaceDadosAvaliacao>('dadosAvaliacao');
+        const sarcFData = loadLocalStorageData<InterfaceSarcFAvaliacao>('sarcFResult');
 
-        if(dadosAvaliacao) {
-          const parsed = JSON.parse(dadosAvaliacao).data;
-          dataDadosAvaliacao = Array.isArray(parsed) ? parsed : [parsed];
-        }
-
-        if(sarcFResult) {
-          const parsed = JSON.parse(sarcFResult).data;
-          dataSarcFResult = Array.isArray(parsed) ? parsed : [parsed];
-        }
-      
         setPacientes(patientData);
-        setDadoAvaliacao(dataDadosAvaliacao);
-        setSarcFResult(dataSarcFResult);
-      } catch (error) {
-        console.error('Error fetching patients:', error);
+        setDadosAvaliacao(avaliacaoData);
+        setSarcFResult(sarcFData);
+        
+      } catch (err) {
+        console.error('Error loading data:', err);
+        setError('Erro ao carregar dados dos pacientes');
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
+  // Helper function to load and parse localStorage data
+  const loadLocalStorageData = <T,>(key: string): T[] => {
+    const data = localStorage.getItem(key);
+    if (!data) return [];
+    
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed?.data) ? parsed.data : [parsed?.data].filter(Boolean);
+  };
 
   const handleDelete = (phone: string) => {
-    const updatedPatients = pacientes.filter(p => p.phone !== phone);
-    setPacientes(updatedPatients);
-    console.log('dadosAvaliacao', dadosAvaliacaoState);
-    // Atualiza o localStorage
-    localStorage.setItem('patient_registration', JSON.stringify({ data: updatedPatients }));
+    if (window.confirm('Tem certeza que deseja excluir este paciente?')) {
+      const updatedPatients = pacientes.filter(p => p.phone !== phone);
+      setPacientes(updatedPatients);
+      localStorage.setItem('patient_registration', JSON.stringify({ data: updatedPatients }));
+    }
   };
-  
+
+  const handleEdit = (phone: string) => {
+    navigate(`/editar-paciente/${phone}`);
+  };
+
+  const handleViewAssessments = (phone: string) => {
+    navigate(`/avaliacoes-paciente/${phone}`);
+  };
+
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Carregando...</span>
+        </Spinner>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="mt-4">
+        <Alert variant="danger">{error}</Alert>
+      </Container>
+    );
+  }
+
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 patient-management-container">
       <header className="text-center mb-4">
-        <h1>SARCTests</h1>
+        <h1>Gerenciamento de Pacientes</h1>
+        <p className="text-muted">Visualize e gerencie todos os pacientes cadastrados</p>
       </header>
-      <main style={{ maxHeight: "500px", overflowY: "auto" }}>
-        <Table responsive bordered hover className="mt-4 text-center align-middle" >
-          <thead style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-            <tr>
-            <th>#</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Idade</th>
-            <th>Altura</th>
-            <th>Peso</th>
-            <th>Sono</th>
-            <th>Visão</th>
-            <th>Audição</th>
-            <th>Alcoólatra</th>
-            <th>Fumante</th>
-            <th>Medicamentos</th>
-            <th>Medicamentos Específicos</th>
-            <th>Atividade Física</th>
-            <th>Histórico de Quedas</th>
-            <th>Motivo</th>
-            <th>Localização</th>
-            <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pacientes.map((paciente, index) => (
-              <tr key={paciente.phone}>
-                <td
-                  style={{
-                    position: "sticky",
-                    left: 0,
-                    zIndex: 1
-                  }}
-                >
-                  {index + 1}
-                </td>
-                <td>{paciente.name}</td>
-                <td>{paciente.email}</td>
-                <td>{paciente.phone}</td>
-                <td>{paciente.age}</td>
-                <td>{paciente.height}</td>
-                <td>{paciente.weight}</td>
-                <td>{paciente.sleep}</td>
-                <td>{paciente.vision}</td>
-                <td>{paciente.hearing}</td>
-                <td>{paciente.alcoholic}</td>
-                <td>{paciente.smoker}</td>
-                <td>{paciente.medicines}</td>
-                <td>{paciente.specificMedicines}</td>
-                <td>{paciente.physicalActivity}</td>
-                <td>{paciente.fallHistory}</td>
-                <td>{paciente.reason}</td>
-                <td>{paciente.location}</td>
-                <td>
-                  <Button variant="danger" size="sm" className="me-2" onClick={() => handleDelete(paciente.phone!)}
-                  >
-                    Excluir
-                  </Button>
-                  {/* <Button variant="warning" size="sm">
-                    Editar
-                  </Button> */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </main>
-      <section id="add-patient" className="mb-4 text-center">
-        <Button
-          variant="dark"
-          id="add-patient-btn"
-          onClick={() => navigate('/cadastro-paciente')}
-        >
-          ➕ Cadastrar Paciente
-        </Button>
-      </section>
-      <section className="text-center">
-        <Button
-          variant="dark"
-          onClick={() => exportarPacientesParaExcel(pacientes)}
-        >
-          Exportar para excel
-        </Button>
-      </section>
+
+      {pacientes.length === 0 ? (
+        <Alert variant="info" className="text-center">
+          Nenhum paciente cadastrado ainda.
+        </Alert>
+      ) : (
+        <>
+          <div className="table-responsive">
+            <Table striped bordered hover className="mt-4">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  {columns.map((col) => (
+                    <th key={col.key}>{col.label}</th>
+                  ))}
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pacientes.map((paciente, index) => (
+                  <tr key={paciente.phone}>
+                    <td>{index + 1}</td>
+                    {columns.map((col) => (
+                      <td key={`${paciente.phone}-${col.key}`}>
+                        {formatCellValue(paciente[col.key as keyof InterfaceRegistration])}
+                      </td>
+                    ))}
+                    <td>
+                      <div className="d-flex gap-2 justify-content-center">
+                        <Button 
+                          variant="danger" 
+                          size="sm" 
+                          onClick={() => handleDelete(paciente.phone!)}
+                          title="Excluir"
+                        >
+                          Excluir
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+
+          <div className="d-flex justify-content-between mt-4">
+            <Button
+              variant="primary"
+              onClick={() => navigate('/cadastro-paciente')}
+              className="me-2"
+            >
+              <i className="bi bi-plus-lg me-2"></i> Cadastrar Novo Paciente
+            </Button>
+            
+            <Button
+              variant="success"
+              onClick={() => exportarPacientesParaExcel(pacientes)}
+            >
+              <i className="bi bi-file-earmark-excel me-2"></i> Exportar para Excel
+            </Button>
+          </div>
+        </>
+      )}
     </Container>
   );
 }
+
+// Helper function to format cell values
+const formatCellValue = (value: any): string => {
+  if (value === undefined || value === null) return '-';
+  if (Array.isArray(value)) return value.join(', ');
+  if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
+  return String(value);
+};
