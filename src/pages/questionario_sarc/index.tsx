@@ -18,48 +18,49 @@ const questions: Question[] = [
     label: 'Qual a dificuldade que tem para levantar e carregar 4,5kg?',
     name: 'forca',
     options: [
-      { value: '0', label: 'Nenhuma' },
-      { value: '1', label: 'Alguma' },
-      { value: '2', label: 'Muita ou impossível' },
+      { value: 'nenhuma', label: 'Nenhuma' },
+      { value: 'alguma', label: 'Alguma' },
+      { value: 'muita_ou_impossivel', label: 'Muita ou impossível' },
     ],
   },
   {
     label: 'Qual a dificuldade que tem para atravessar uma sala?',
     name: 'apoio',
     options: [
-      { value: '0', label: 'Nenhuma' },
-      { value: '1', label: 'Alguma' },
-      { value: '2', label: 'Muita, com apoio ou impossível' },
+      { value: 'nenhuma', label: 'Nenhuma' },
+      { value: 'alguma', label: 'Alguma' },
+      { value: 'muita_com_apoio_ou_impossivel', label: 'Muita, com apoio ou impossível' },
     ],
   },
   {
     label: 'Qual a dificuldade que tem para se levantar de uma cadeira ou de uma cama?',
     name: 'levantar',
     options: [
-      { value: '0', label: 'Nenhuma' },
-      { value: '1', label: 'Alguma' },
-      { value: '2', label: 'Muita ou impossível sem ajuda' },
+      { value: 'nenhuma', label: 'Nenhuma' },
+      { value: 'alguma', label: 'Alguma' },
+      { value: 'muita_ou_impossivel_sem_ajuda', label: 'Muita ou impossível sem ajuda' },
     ],
   },
   {
     label: 'Qual a dificuldade que tem para subir um lance de 10 degraus?',
     name: 'escadas',
     options: [
-      { value: '0', label: 'Nenhuma' },
-      { value: '1', label: 'Alguma' },
-      { value: '2', label: 'Muita ou impossível' },
+      { value: 'nenhuma', label: 'Nenhuma' },
+      { value: 'alguma', label: 'Alguma' },
+      { value: 'muita_ou_impossivel', label: 'Muita ou impossível' },
     ],
   },
   {
     label: 'Quantas vezes caiu no último ano?',
     name: 'quedas',
     options: [
-      { value: '0', label: 'Nenhuma' },
-      { value: '1', label: '1 a 3 quedas' },
-      { value: '2', label: '4 quedas ou mais' },
+      { value: 'nenhuma', label: 'Nenhuma' },
+      { value: 'uma_a_tres', label: '1 a 3 quedas' },
+      { value: 'quatro_ou_mais', label: '4 quedas ou mais' },
     ],
   },
 ];
+
 
 export const SarcFForm: React.FC = () => {
   const [formData, setFormData] = useState<Record<string, string>>({});
