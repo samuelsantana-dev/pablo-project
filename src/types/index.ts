@@ -37,3 +37,15 @@ export interface InterfacePatientRegistration {
       reason?: string;
       location?: string;
   }
+
+
+  export interface InterfaceDadosAvaliacao {
+    forcaPreensao: number;
+    tug: number;
+    tugAjustada: number;
+    anguloDeFase: number;
+    sentarLevantar: number;
+    panturrilha: number;
+    sexo: 'Masculino' | 'Feminino' | string;
+  }
+  
