@@ -105,7 +105,7 @@ export function Header() {
               <FaSignOutAlt /> Sair
             </Button>
             <Nav.Link as={Link} to="/gestao-pacientes" className="d-flex align-items-center gap-1 text-white">
-              <FaUserFriends /> Gestão de Pacientes
+              <FaUserFriends /> SARCTest
             </Nav.Link>
           </div>
         )}
