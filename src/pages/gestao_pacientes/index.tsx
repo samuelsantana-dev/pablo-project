@@ -5,13 +5,15 @@ import {
   Table,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { InterfaceDadosAvaliacao, InterfaceRegistration } from '../../types';
+import { InterfaceDadosAvaliacao, InterfaceRegistration, InterfaceSarcFAvaliacao } from '../../types';
 import './PatientManagement.css';
 import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
 
 export function PatientManagement() {
   const [pacientes, setPacientes] = useState<InterfaceRegistration[]>([]);
-  const [dadosAvaliacao, setDadoAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
+  const [dadosAvaliacaoState, setDadoAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
+  const [sarcFResult, setSarcFResult] = useState<InterfaceSarcFAvaliacao[]>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,8 +21,11 @@ export function PatientManagement() {
       try {
         const data = localStorage.getItem('patient_registration');
         const dadosAvaliacao = localStorage.getItem('dadosAvaliacao');
+        const sarcFResult = localStorage.getItem('sarcFResult');
+        
         let patientData: InterfaceRegistration[] = [];
         let dataDadosAvaliacao: InterfaceDadosAvaliacao[] = [];
+        let dataSarcFResult: InterfaceSarcFAvaliacao[] = [];
       
         if (data) {
           const parsed = JSON.parse(data).data;
@@ -31,9 +36,15 @@ export function PatientManagement() {
           const parsed = JSON.parse(dadosAvaliacao).data;
           dataDadosAvaliacao = Array.isArray(parsed) ? parsed : [parsed];
         }
+
+        if(sarcFResult) {
+          const parsed = JSON.parse(sarcFResult).data;
+          dataSarcFResult = Array.isArray(parsed) ? parsed : [parsed];
+        }
       
         setPacientes(patientData);
         setDadoAvaliacao(dataDadosAvaliacao);
+        setSarcFResult(dataSarcFResult);
       } catch (error) {
         console.error('Error fetching patients:', error);
       }
@@ -45,7 +56,7 @@ export function PatientManagement() {
   const handleDelete = (phone: string) => {
     const updatedPatients = pacientes.filter(p => p.phone !== phone);
     setPacientes(updatedPatients);
-    console.log('dadosAvaliacao', dadosAvaliacao);
+    console.log('dadosAvaliacao', dadosAvaliacaoState);
     // Atualiza o localStorage
     localStorage.setItem('patient_registration', JSON.stringify({ data: updatedPatients }));
   };

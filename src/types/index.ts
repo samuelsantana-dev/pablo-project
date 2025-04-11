@@ -49,3 +49,11 @@ export interface InterfacePatientRegistration {
     sexo: 'Masculino' | 'Feminino' | string;
   }
   
+  export interface InterfaceSarcFAvaliacao {
+    forca?: string | number | null;
+    apoio?: string | number | null;
+    levantar?: string | number | null;
+    escadas?: string | number | null;
+    quedas?: string | number | null;
+  }
+  
