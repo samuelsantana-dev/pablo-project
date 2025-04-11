@@ -94,7 +94,7 @@ export const SarcFForm: React.FC = () => {
     // salvarNoLocalStorage('sarcFResult', resultData);
     localStorage.setItem('sarcFResult', JSON.stringify(resultData, null, 2));
     setResult(JSON.stringify(resultData, null, 2));
-    alert('Resultado salvo com sucesso!');
+    alert('Resultado da Avalição!');
   };
 
   const patientRegistratioStorage = localStorage.getItem('user');
@@ -157,7 +157,7 @@ export const SarcFForm: React.FC = () => {
           </ul>
           </div>
           <div className="mt-4">
-            <h4>Resultado Salvo:</h4>
+            <h4>Resultado da Avaliação:</h4>
             <p><strong>Pontuação Total:</strong> {parsed.pontuacao}</p>
             <p><strong>Predição de Sarcopenia:</strong> {parsed.predicao}</p>
             <h5>Respostas:</h5>
