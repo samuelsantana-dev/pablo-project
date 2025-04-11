@@ -5,30 +5,35 @@ import {
   Table,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { InterfaceRegistration } from '../../types';
+import { InterfaceDadosAvaliacao, InterfaceRegistration } from '../../types';
 import './PatientManagement.css';
 import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
 
 export function PatientManagement() {
   const [pacientes, setPacientes] = useState<InterfaceRegistration[]>([]);
+  const [dadosAvaliacao, setDadoAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
   const navigate = useNavigate();
 
-  console.log('pacientes', pacientes);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = localStorage.getItem('table_management');
+        const dadosAvaliacao = localStorage.getItem('dadosAvaliacao');
         let patientData: InterfaceRegistration[] = [];
+        let dataDadosAvaliacao: InterfaceDadosAvaliacao[] = [];
       
         if (data) {
           const parsed = JSON.parse(data).data;
-      
-          // Se for um objeto único, transforma em array
           patientData = Array.isArray(parsed) ? parsed : [parsed];
         }
+
+        if(dadosAvaliacao) {
+          const parsed = JSON.parse(dadosAvaliacao).data;
+          dataDadosAvaliacao = Array.isArray(parsed) ? parsed : [parsed];
+        }
       
-        console.log('patientData', patientData);
         setPacientes(patientData);
+        setDadoAvaliacao(dataDadosAvaliacao);
       } catch (error) {
         console.error('Error fetching patients:', error);
       }
@@ -40,7 +45,7 @@ export function PatientManagement() {
   const handleDelete = (phone: string) => {
     const updatedPatients = pacientes.filter(p => p.phone !== phone);
     setPacientes(updatedPatients);
-  
+    console.log('dadosAvaliacao', dadosAvaliacao);
     // Atualiza o localStorage
     localStorage.setItem('table_management', JSON.stringify({ data: updatedPatients }));
   };
@@ -109,9 +114,9 @@ export function PatientManagement() {
                   >
                     Excluir
                   </Button>
-                  <Button variant="warning" size="sm">
+                  {/* <Button variant="warning" size="sm">
                     Editar
-                  </Button>
+                  </Button> */}
                 </td>
               </tr>
             ))}
