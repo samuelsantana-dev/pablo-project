@@ -117,7 +117,7 @@ export function RegistrationPatient() {
       
     //  await  RegisterPatient({data});
      localStorage.setItem(`user`, JSON.stringify({ data }));
-     localStorage.setItem(`table_management`, JSON.stringify({ data }));
+     localStorage.setItem(`patient_registration`, JSON.stringify({ data }));
      alert('Formulário enviado com sucesso!');
     handleReset();
     navigate('/laudo-sarcopenia');
