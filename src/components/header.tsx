@@ -37,11 +37,11 @@ export function Header() {
   }
 
   function handleCleanUser() {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userFormData");
+    localStorage.removeItem("dadosAvaliacao");
+    localStorage.removeItem("sarcFResult")
+    localStorage.removeItem("patient_registration")
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   }
 
   
