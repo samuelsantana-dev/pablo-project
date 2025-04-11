@@ -53,7 +53,7 @@ export function Home() {
       <Row className="align-items-center">
         {/* Coluna com texto explicativo */}
         <Col md={6} className="mb-4 mb-md-0">
-          <h1 className="display-4 fw-bold">Bem-vindo ao Sistema de SARCTest</h1>
+          <h1 className="display-4 fw-bold">Bem-vindo ao Sistema SARCTest</h1>
           <p className="lead">
           Interface para avaliação de indicativo de sarcopenia em pessoas idosas
           Rastreie a saúde muscular de pessoas idosas.
