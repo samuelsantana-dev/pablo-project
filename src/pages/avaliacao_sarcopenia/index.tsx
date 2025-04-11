@@ -9,6 +9,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { InterfaceRegistration } from '../../types';
+import { exportarAvaliacaoParaPDF } from '../../utils/exportarPdf';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
@@ -190,6 +191,30 @@ export function SarcopeniaAssessment() {
                 Gerar Avaliação
               </Button>
             </div>
+          
+            <Button
+            variant="primary"
+            onClick={() =>
+              exportarAvaliacaoParaPDF({
+                sexo,
+                forcaPreensao,
+                tug,
+                anguloDeFase,
+                sentarLevantar,
+                panturrilha,
+                laudo,
+                ...patientData as AvaliacaoData,
+                specificMedicines: Array.isArray(patientData.specificMedicines)
+                  ? patientData.specificMedicines.join(', ')
+                  : patientData.specificMedicines ?? '',
+              })
+            }
+          >
+            Exportar para PDF
+          </Button>
+
+
+
           </Form>
         </Card.Body>
       </Card>
