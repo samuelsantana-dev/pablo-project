@@ -1,94 +1,99 @@
 import jsPDF from 'jspdf';
 
-export interface AvaliacaoData {
-  sexo?: string;
-  forcaPreensao?: number;
-  tug?: number;
-  anguloDeFase?: number;
-  sentarLevantar?: number;
-  panturrilha?: number;
-  laudo?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  birthdate?: string;
-  age?: number;
-  height?: number;
-  weight?: number;
-  cpf?: string;
-  sleep?: string;
-  vision?: string;
-  hearing?: string;
-  alcoholic?: string;
-  smoker?: string;
-  medicines?: string;
-  specificMedicines?: string | string[];
-  physicalActivity?: string;
-  fallHistory?: string;
-  reason?: string;
-  location?: string;
+interface AvaliacaoData {
+  // ... (mantenha sua interface existente, sem mudanças)
 }
 
 export function exportarAvaliacaoParaPDF(dados: AvaliacaoData) {
   const pdf = new jsPDF();
+  let y = 20; // Posição vertical inicial
 
+  // --- Função para adicionar texto com controle de quebra de página ---
+  const addText = (text: string | string[], x: number, lineHeight = 7, options?: any) => {
+    const lines = Array.isArray(text) ? text : [text];
+    
+    lines.forEach(line => {
+      if (y > 280) { // Se atingir o final da página
+        pdf.addPage(); // Adiciona nova página
+        y = 20; // Reinicia a posição Y
+      }
+      pdf.text(line, x, y, options);
+      y += lineHeight;
+    });
+  };
+
+  // --- 1. Cabeçalho ---
   pdf.setFontSize(16);
-  pdf.text('Avaliação de Sarcopenia', 105, 20, { align: 'center' });
+  addText('Avaliação de Sarcopenia', 105, 10, { align: 'center' });
 
+  // --- 2. Informações do Paciente ---
   pdf.setFontSize(14);
-  let y = 30;
-  pdf.text('Informações do Paciente:', 20, y); y += 10;
-
+  addText('Informações do Paciente:', 20, 10);
+  
   pdf.setFontSize(12);
   const pacienteInfo = [
-    `Nome: ${dados.name}`,
-    `Email: ${dados.email}`,
-    `Telefone: ${dados.phone}`,
-    `Data de Nascimento: ${dados.birthdate}`,
-    `Idade: ${dados.age}`,
-    `Altura: ${dados.height} cm`,
-    `Peso: ${dados.weight} kg`,
-    `CPF: ${dados.cpf}`,
-    `Qualidade do Sono: ${dados.sleep}`,
-    `Visão: ${dados.vision}`,
-    `Audição: ${dados.hearing}`,
-    `Alcoolismo: ${dados.alcoholic}`,
-    `Fumante: ${dados.smoker}`,
-    `Medicamentos: ${dados.medicines}`,
-    `Medicamentos Específicos: ${dados.specificMedicines}`,
-    `Atividade Física: ${dados.physicalActivity}`,
-    `Histórico de Quedas: ${dados.fallHistory}`,
-    `Motivo da Avaliação: ${dados.reason}`,
-    `Local da Avaliação: ${dados.location}`
+    `Nome: ${dados.name || 'Não informado'}`,
+    `Email: ${dados.email || 'Não informado'}`,
+    `Telefone: ${dados.phone || 'Não informado'}`,
+    `Data de Nascimento: ${dados.birthdate || 'Não informado'}`,
+    `Idade: ${dados.age || 'Não informado'}`,
+    `Altura: ${dados.height || 'Não informado'} cm`,
+    `Peso: ${dados.weight || 'Não informado'} kg`,
+    `CPF: ${dados.cpf || 'Não informado'}`,
+    `Qualidade do Sono: ${dados.sleep || 'Não informado'}`,
+    `Visão: ${dados.vision || 'Não informado'}`,
+    `Audição: ${dados.hearing || 'Não informado'}`,
+    `Alcoolismo: ${dados.alcoholic || 'Não informado'}`,
+    `Fumante: ${dados.smoker || 'Não informado'}`,
+    `Medicamentos: ${dados.medicines || 'Não informado'}`,
+    `Medicamentos Específicos: ${Array.isArray(dados.specificMedicines) ? dados.specificMedicines.join(', ') : dados.specificMedicines || 'Não informado'}`,
+    `Atividade Física: ${dados.physicalActivity || 'Não informado'}`,
+    `Histórico de Quedas: ${dados.fallHistory || 'Não informado'}`,
+    `Motivo da Avaliação: ${dados.reason || 'Não informado'}`,
+    `Local da Avaliação: ${dados.location || 'Não informado'}`
   ];
+  addText(pacienteInfo, 20);
 
-  pacienteInfo.forEach((line) => {
-    pdf.text(line, 20, y);
-    y += 8;
-  });
-
-  y += 5;
+  // --- 3. Resultados da Avaliação ---
   pdf.setFontSize(14);
-  pdf.text('Resultados da Avaliação:', 20, y); y += 10;
-
+  addText('Resultados da Avaliação:', 20, 10);
+  
   pdf.setFontSize(12);
-  pdf.text(`Sexo: ${dados.sexo}`, 20, y); y += 10;
-  if (dados.forcaPreensao !== undefined) pdf.text(`Força de Preensão: ${dados.forcaPreensao} kgf`, 20, y), y += 10;
-  if (dados.tug !== undefined) pdf.text(`TUG: ${dados.tug} s`, 20, y), y += 10;
-  if (dados.anguloDeFase !== undefined) pdf.text(`Ângulo de Fase: ${dados.anguloDeFase}°`, 20, y), y += 10;
-  if (dados.sentarLevantar !== undefined) pdf.text(`Sentar e Levantar: ${dados.sentarLevantar} s`, 20, y), y += 10;
-  if (dados.panturrilha !== undefined) pdf.text(`Panturrilha: ${dados.panturrilha} cm`, 20, y), y += 10;
+  const resultados = [
+    `Sexo: ${dados.sexo || 'Não informado'}`,
+    `Força de Preensão: ${dados.forcaPreensao !== undefined ? dados.forcaPreensao + ' kgf' : 'Não avaliado'}`,
+    `TUG: ${dados.tug !== undefined ? dados.tug + ' s' : 'Não avaliado'}`,
+    `Ângulo de Fase: ${dados.anguloDeFase !== undefined ? dados.anguloDeFase + '°' : 'Não avaliado'}`,
+    `Sentar e Levantar: ${dados.sentarLevantar !== undefined ? dados.sentarLevantar + ' s' : 'Não avaliado'}`,
+    `Panturrilha: ${dados.panturrilha !== undefined ? dados.panturrilha + ' cm' : 'Não avaliado'}`
+  ];
+  addText(resultados, 20);
 
+  // --- 4. Laudo (se existir) ---
   if (dados.laudo) {
-    y += 10;
     pdf.setFontSize(14);
-    pdf.text('Laudo:', 20, y); y += 10;
-
+    addText('Conclusão:', 20, 10);
+    
     pdf.setFontSize(12);
     const laudoLines = pdf.splitTextToSize(dados.laudo, 170);
-    pdf.text(laudoLines, 20, y);
+    addText(laudoLines, 20);
   }
 
-  pdf.save('avaliacao-sarcopenia.pdf');
-}
+  // --- 5. Referências ---
+  pdf.setFontSize(12);
+  addText('Referências:', 20, 10);
+  
+  pdf.setFontSize(10);
+  pdf.setTextColor(80, 80, 80); // Cor cinza
+  const referencias = [
+    '1. CRUZ-JENTOFT, Alfonso J. et al. Sarcopenia: revised European consensus on definition and diagnosis.',
+    '   Age and Ageing, v. 48, n. 1, p. 16-31, 2019. doi:10.1093/ageing/afy169.',
+    '2. ZHANG, Jian et al. The Diagnostic Accuracy and Cutoff Value of Phase Angle for Screening Sarcopenia:',
+    '   A Systematic Review and Meta-Analysis. Journal of the American Medical Directors Association,',
+    '   v. 25, n. 2, p. 105283, 2024. doi:10.1016/j.jamda.2023.105283.'
+  ];
+  addText(referencias, 22);
 
+  // --- Salvar PDF ---
+  pdf.save(`avaliacao_${dados.name || 'paciente'}.pdf`);
+}
