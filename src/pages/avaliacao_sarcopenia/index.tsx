@@ -33,55 +33,57 @@ export function SarcopeniaAssessment() {
       return;
     }
 
-    const tugAjustada = tug / ((anguloDeFase / 100) ** 2);
     const criterios: string[] = [];
 
+    // Avaliação ângulo de fase
+    if (anguloDeFase < 4.54) {
+      criterios.push(`Ângulo de Fase: ${anguloDeFase.toFixed(2)}°. Valor de Referência: 4.54 - 5.25. Interpretação: O valor está **baixo**, sugerindo possível redução na massa muscular ou integridade celular. Recomenda-se avaliação adicional.`);
+    } else if (anguloDeFase >= 4.54 && anguloDeFase <= 5.25) {
+      criterios.push(`Ângulo de Fase: ${anguloDeFase.toFixed(2)}°. Valor de Referência: 4.54 - 5.25. Interpretação: O valor está **dentro da faixa esperada**${anguloDeFase < 4.7 ? ', mas próximo do limite inferior (4.54), indicando possível redução na massa muscular. Recomenda-se métodos adicionais de triagem.' : '.'}`);
+    } else {
+      criterios.push(`Ângulo de Fase: ${anguloDeFase.toFixed(2)}°. Valor de Referência: 4.54 - 5.25. Interpretação: O valor está alto, sugerindo boa integridade celular.`);
+    }
+    
+
     // Avaliação força de preensão
-    if ((sexo === 'Masculino' && forcaPreensao < 27) || (sexo === 'Feminino' && forcaPreensao < 16)) {
-      criterios.push('Força de preensão abaixo do valor de referência. Pode indicar sarcopenia.');
+    const refForca = sexo === 'Masculino' ? 27 : 16;
+    if (forcaPreensao < refForca) {
+      criterios.push(`Força de Preensão: ${forcaPreensao} kg. Valor de Referência: ${sexo === 'Masculino' ? 'Homem < 27 kg' : 'Mulher < 16 kg'}. Interpretação: Valor abaixo do esperado, pode indicar redução de força muscular.`);
     } else {
-      criterios.push('Força de preensão dentro do esperado.');
-    }
-
-    // Avaliação TUG ajustado
-    if ((sexo === 'Masculino' && tugAjustada < 6.0) || (sexo === 'Feminino' && tugAjustada < 5.0)) {
-      criterios.push('Índice TUG ajustado abaixo do esperado. Pode indicar perda de massa muscular.');
-    } else {
-      criterios.push('Índice TUG ajustado dentro da normalidade.');
-    }
-
-    // Avaliação sentar e levantar
-    if (sentarLevantar > 15) {
-      criterios.push('Tempo no teste sentar-levantar acima do recomendado. Possível fraqueza muscular.');
-    } else {
-      criterios.push('Tempo no teste sentar-levantar dentro do esperado.');
+      criterios.push(`Força de Preensão: ${forcaPreensao} kg. Valor de Referência: ${sexo === 'Masculino' ? 'Homem < 27 kg' : 'Mulher < 16 kg'}. Interpretação: ${forcaPreensao === refForca && sexo === 'Masculino' ? 'Valor no limite superior (exatamente 27 kg), força adequada mas sem margem de segurança.' : 'Valor acima do esperado, sugerindo força preservada.'}`);
     }
 
     // Avaliação panturrilha
-    if ((sexo === 'Masculino' && panturrilha < 31) || (sexo === 'Feminino' && panturrilha < 30)) {
-      criterios.push('Circunferência da panturrilha abaixo do recomendado.');
+    const refPanturrilha = 31;
+    if (panturrilha < refPanturrilha) {
+      criterios.push(`Circunferência da Panturrilha: ${panturrilha} cm. Valor de Referência: < 31 cm. Interpretação: Valor abaixo do esperado, pode indicar redução de massa muscular.`);
     } else {
-      criterios.push('Circunferência da panturrilha dentro da normalidade.');
+      criterios.push(`Circunferência da Panturrilha: ${panturrilha} cm. Valor de Referência: < 31 cm. Interpretação: Valor acima do limite de referência (${panturrilha} cm vs. 31 cm), sugerindo circunferência preservada ou aumentada, reduzindo a probabilidade de sarcopenia.`);
     }
 
-    // Avaliação ângulo de fase
-    let anguloFaseText = '';
-    if (anguloDeFase > 5.25) {
-      anguloFaseText = 'Ângulo de fase sugere baixo risco de sarcopenia.';
-    } else if (anguloDeFase < 4.54) {
-      anguloFaseText = 'Ângulo de fase sugere risco aumentado de sarcopenia. Avaliação adicional recomendada.';
+    // Avaliação sentar e levantar
+    const refSentarLevantar = 15;
+    if (sentarLevantar > refSentarLevantar) {
+      criterios.push(`Teste Sentar e Levantar: ${sentarLevantar} s. Valor de Referência: <= 15 s. Interpretação: Tempo aumentado, pode indicar redução de força nos membros inferiores.`);
     } else {
-      anguloFaseText = 'Ângulo de fase dentro da faixa intermediária. Triagem adicional pode ser necessária.';
+      criterios.push(`Teste Sentar e Levantar: ${sentarLevantar} s. Valor de Referência: <= 15 s. Interpretação: Tempo dentro do esperado, indicando boa capacidade funcional e força muscular nos membros inferiores.`);
     }
-    criterios.push(anguloFaseText);
+
+    // Avaliação TUG
+    const refTUG = 19;
+    if (tug > refTUG) {
+      criterios.push(`TUG - Time Up and Go: ${tug} s. Valor de Referência: <= 19 s. Interpretação: Tempo aumentado, pode indicar risco de mobilidade reduzida.`);
+    } else {
+      criterios.push(`  Time Up and Go: ${tug} s. Valor de Referência: <= 19 s. Interpretação: Tempo dentro da normalidade, sugerindo boa mobilidade e equilíbrio, sem risco aumentado de quedas.`);
+    }
 
     const sarcopenia = criterios.some(item =>
-      item.includes('abaixo') || item.includes('fraqueza') || item.includes('aumentado')
+      item.includes('abaixo') || item.includes('aumentado') || item.includes('redução')
     );
 
     const userPatient = localStorage.getItem('user');
     let patientData = {} as InterfaceRegistration;
-  
+
     if (userPatient) {
       patientData = JSON.parse(userPatient).data;
     }
@@ -89,7 +91,6 @@ export function SarcopeniaAssessment() {
     const dados = {
       forcaPreensao,
       tug,
-      tugAjustada: tugAjustada.toFixed(2),
       anguloDeFase,
       sentarLevantar,
       panturrilha,
@@ -103,75 +104,60 @@ export function SarcopeniaAssessment() {
         <Card.Body>
           <Card.Title className="text-center text-primary mb-3">Resultado da Avaliação</Card.Title>
     
-          <h5 className="mb-3 text-secondary">Informações do Paciente</h5>
-          <ul className="mb-4">
-            <li><strong>Nome:</strong> {patientData.name}</li>
-            <li><strong>Email:</strong> {patientData.email}</li>
-            <li><strong>Telefone:</strong> {patientData.phone}</li>
-            <li><strong>Data de Nascimento:</strong> {patientData.birthdate}</li>
-            <li><strong>Idade:</strong> {patientData.age}</li>
-            <li><strong>Altura:</strong> {patientData.height} cm</li>
-            <li><strong>Peso:</strong> {patientData.weight} kg</li>
-            <li><strong>CPF:</strong> {patientData.cpf}</li>
-            <li><strong>Qualidade do Sono:</strong> {patientData.sleep}</li>
-            <li><strong>Visão:</strong> {patientData.vision}</li>
-            <li><strong>Audição:</strong> {patientData.hearing}</li>
-            <li><strong>Alcoolismo:</strong> {patientData.alcoholic}</li>
-            <li><strong>Fumante:</strong> {patientData.smoker}</li>
-            <li><strong>Medicamentos:</strong> {patientData.medicines}</li>
-            <li><strong>Medicamentos Específicos:</strong> {
-              Array.isArray(patientData.specificMedicines)
-                ? patientData.specificMedicines.join(', ')
-                : patientData.specificMedicines ?? ''
-            }</li>
-            <li><strong>Atividade Física:</strong> {patientData.physicalActivity}</li>
-            <li><strong>Histórico de Quedas:</strong> {patientData.fallHistory}</li>
-            <li><strong>Motivo da Avaliação:</strong> {patientData.reason}</li>
-            <li><strong>Local da Avaliação:</strong> {patientData.location}</li>
-          </ul>
-    
-          <h5 className="mb-3 text-secondary">Parâmetros Avaliados</h5>
+          <h5 className="mb-3 text-secondary">Avaliação de Sarcopenia</h5>
           <ul className="mb-3">
-            <li><strong>Força de Preensão Manual:</strong> {forcaPreensao} kgf</li>
-            <li><strong>TUG:</strong> {tug} kg, índice ajustado: {tugAjustada.toFixed(2)} kg/m²</li>
-            <li><strong>Ângulo de Fase:</strong> {anguloDeFase}°</li>
-            <li><strong>Teste Sentar e Levantar:</strong> {sentarLevantar} s</li>
-            <li><strong>Circunferência da Panturrilha:</strong> {panturrilha} cm</li>
-            <li><strong>Sexo:</strong> {sexo}</li>
+            {criterios.map((criterio, index) => (
+              <li
+                key={index}
+                dangerouslySetInnerHTML={{ __html: criterio.replace(/\. /g, '.<br/>') }}
+              />
+            ))}
           </ul>
-
-          <div className="d-grid gap-2 mb-4">
-            <Button
-              variant="primary"
-              onClick={() =>
-                exportarAvaliacaoParaPDF({
-                  sexo,
-                  forcaPreensao,
-                  tug,
-                  anguloDeFase,
-                  sentarLevantar,
-                  panturrilha,
-                  laudo,
-                  ...patientData as AvaliacaoData,
-                  specificMedicines: Array.isArray(patientData.specificMedicines)
-                    ? patientData.specificMedicines.join(', ')
-                    : patientData.specificMedicines ?? '',
-                })
-              }
-            >
-              Exportar para PDF
-            </Button>
-          </div>
     
           <Alert variant={sarcopenia ? 'danger' : 'success'}>
-            <strong>Conclusão:</strong> {sarcopenia
-              ? 'Risco de sarcopenia identificado.'
+            <strong>Conclusão:</strong>{' '}
+            {sarcopenia
+              ? 'Possível risco de sarcopenia identificado. Recomenda-se avaliação adicional.'
               : 'Todos os parâmetros estão dentro da normalidade.'}
-            <ul className="mt-2">{criterios.map((c, i) => <li key={i}>{c}</li>)}</ul>
           </Alert>
+    
+          <div className="mt-4">
+            <h6 className="text-muted">Referências:</h6>
+            <ul style={{ fontSize: '0.9rem' }}>
+              <li>
+                CRUZ-JENTOFT, Alfonso J. et al. <em>Sarcopenia: revised European consensus on definition and diagnosis</em>. Age and Ageing, v. 48, n. 1, p. 16–31, 2019.
+              </li>
+              <li>
+                ZHANG, Jian et al. <em>The Diagnostic Accuracy and Cutoff Value of Phase Angle for Screening Sarcopenia: A Systematic Review and Meta-Analysis</em>. Journal of the American Medical Directors Association, 2024.
+              </li>
+            </ul>
+    
+            <div className="d-flex justify-content-center gap-3 mt-4">
+              <Button variant="primary" onClick={() => window.location.reload()}>
+                Finalizar Avaliação
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() =>
+                  exportarAvaliacaoParaPDF({
+                    forcaPreensao,
+                    tug,
+                    anguloDeFase,
+                    sentarLevantar,
+                    panturrilha,
+                    sexo,
+                  })
+                }
+              >
+                Imprimir PDF
+              </Button>
+            </div>
+          </div>
         </Card.Body>
       </Card>
-    );    
+    );
+    
+    
   };
 
   return (
@@ -193,7 +179,7 @@ export function SarcopeniaAssessment() {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>TUG (kg)</Form.Label>
+                  <Form.Label>TUG (s)</Form.Label>
                   <Form.Control 
                     type="number" 
                     value={tug ?? ''} 
