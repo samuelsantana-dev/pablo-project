@@ -47,7 +47,7 @@ export function Header() {
 
   
   return (
-    <Navbar expand="lg" bg="dark" variant="dark" className="shadow-sm mb-4">
+    <Navbar expand="lg" bg="dark" variant="dark" className="shadow-sm">
   <Container>
     <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-info">
       🏥 SARCTesT

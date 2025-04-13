@@ -48,7 +48,7 @@ export function Home() {
   } 
 
   return (
-    <div className="home-container bg-gradient-pixeon text-white" style={{ minHeight: "100vh" }}>
+    <div className="home-container bg-gradient-pixeon text-white" style={{ minHeight: "100%", marginTop: 0, paddingTop: 0}}>
     <Container className="py-5">
       <Row className="align-items-center">
         {/* Coluna com texto explicativo */}

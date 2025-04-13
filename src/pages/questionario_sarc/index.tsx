@@ -142,6 +142,12 @@ export const SarcFForm: React.FC = () => {
     setResult(resultData);
   };
 
+  const handleFinalizarTeste = () => {
+    setFormData({});
+    setResult(null);
+    localStorage.removeItem('sarcFResult'); // Remove o item específico do localStorage
+  };
+
   const renderPatientInfo = () => (
     <Card className="mb-4">
       <Card.Body>
@@ -184,7 +190,7 @@ export const SarcFForm: React.FC = () => {
           <h5 className="mt-4">Detalhes das Respostas:</h5>
           <ul className="list-unstyled">
             {questions.map((question) => {
-              const answer = result.respostas[question.name];
+              const answer = result.respostas?.[question.name] ?? '';
               const option = question.options.find(opt => opt.value === answer);
               return (
                 <li key={question.name} className="mb-3">
@@ -198,18 +204,25 @@ export const SarcFForm: React.FC = () => {
             })}
           </ul>
 
-          <div className="d-flex justify-content-center mt-4">
+          <div className="d-flex justify-content-center gap-3 mt-4">
             <Button
               variant="primary"
               onClick={() => exportarSarcFParaPDF(patientData, result, questions)}
             >
               Exportar para PDF
             </Button>
+            <Button
+    variant="primary"
+    onClick={handleFinalizarTeste}
+  >
+    Finalizar Teste
+  </Button>
           </div>
         </Card.Body>
       </Card>
     );
   };
+  console.log("QUESTIONS:", questions)
 
   return (
     <Container className="my-4">
@@ -226,17 +239,21 @@ export const SarcFForm: React.FC = () => {
               </Alert>
             )}
 
-            {questions.map((q) => (
-              <div key={q.name} className="mb-4">
-                <CheckboxGroup
-                  label={q.label}
-                  name={q.name}
-                  values={[formData[q?.name] ?? '']}
-                  onChange={handleCheckboxChange}
-                  options={q.options}
-                />
-              </div>
-            ))}
+{Array.isArray(questions) &&
+  questions
+    .filter((q) => q && q.name && q.options) // evita q indefinido ou incompleto
+    .map((q) => (
+      <div key={q.name} className="mb-4">
+        <CheckboxGroup
+          label={q.label}
+          name={q.name}
+          values={[formData?.[q.name] ?? '']}
+          onChange={handleCheckboxChange}
+          options={q.options}
+        />
+      </div>
+    ))}
+
 
             <div className="d-grid">
               <Button variant="primary" type="submit" size="lg">
@@ -251,3 +268,5 @@ export const SarcFForm: React.FC = () => {
     </Container>
   );
 };
+
+

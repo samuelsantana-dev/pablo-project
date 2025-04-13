@@ -95,7 +95,7 @@ export function Login() {
               <Form.Control type="text" name="phone" value={formData.phone} placeholder="Digite seu telefone" onChange={handleChange} />
             </Form.Group>
             <div className="d-grid">
-              <Button variant="primary" type="submit">Login</Button>
+              <Button variant="primary" type="submit" className="mb-3">Login</Button>
               <Button variant="primary" onClick={() => navigate("/cadastro-paciente")}>Cadastre-se</Button>
             </div>
           </Form>
