@@ -231,7 +231,7 @@ export const SarcFForm: React.FC = () => {
                 <CheckboxGroup
                   label={q.label}
                   name={q.name}
-                  values={[formData[q.name] || '']}
+                  values={[formData[q?.name] ?? '']}
                   onChange={handleCheckboxChange}
                   options={q.options}
                 />
