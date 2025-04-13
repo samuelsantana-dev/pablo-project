@@ -77,7 +77,7 @@ export function Header() {
               onClick={handleCleanUser}
               className="d-flex align-items-center gap-2 w-auto"
             >
-              <FaSignOutAlt /> Excluir Paciente
+              <FaSignOutAlt /> Limpar dados
             </Button>
           </>
         )}
