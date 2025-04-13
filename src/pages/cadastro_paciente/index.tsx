@@ -7,6 +7,7 @@ import CheckboxGroup from '../../components/checkbox_group';
 import { personalBackground, listOptions, yesNoOptions, specificListMedicines } from '../../list-option/options';
 import { useNavigate } from 'react-router-dom';
 import { salvarNoLocalStorage, saveUnicData } from '../../utils/saveLocalStorage';
+import { ValidarCPF } from '../../utils/validations';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -191,19 +192,24 @@ export function RegistrationPatient() {
         </Row>
 
         <Row className="mb-4">
-          <Col md={6}>
-            <Form.Group controlId="phone">
-              <Form.Label className="form-label">Telefone:</Form.Label>
-              <Form.Control
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="Digite o telefone"
-                required
-                className="input-field"
-              />
-            </Form.Group>
-          </Col>
+        <Col md={6}>
+          <Form.Group controlId="phone">
+            <Form.Label className="form-label">Telefone (WhatsApp):</Form.Label>
+            <Form.Control
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Ex: 11991234567"
+              required
+              className="input-field"
+              isInvalid={phone !== '' && !/^\d{11}$/.test(phone)}
+            />
+            <Form.Control.Feedback type="invalid">
+              Informe um número de WhatsApp válido com DDD (ex: 11991234567)
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+
           <Col md={6}>
             <Form.Group controlId="birthdate">
               <Form.Label className="form-label">Data de Nascimento:</Form.Label>
@@ -268,18 +274,23 @@ export function RegistrationPatient() {
         </Row>
 
         <Row className="mb-4">
-          <Col md={6}>
-            <Form.Group controlId="cpf">
-              <Form.Label className="form-label">Cpf (kg):</Form.Label>
-              <Form.Control
-                type="number"
-                value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
-                placeholder="Cpf"
-                className="input-field"
-              />
-            </Form.Group>
-          </Col>
+        <Col md={6}>
+          <Form.Group controlId="cpf">
+            <Form.Label className="form-label">CPF:</Form.Label>
+            <Form.Control
+              type="text"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value.replace(/\D/g, ''))}
+              placeholder="Digite o CPF"
+              className="input-field"
+              isInvalid={cpf !== '' && !ValidarCPF(cpf)}
+            />
+            <Form.Control.Feedback type="invalid">
+              CPF inválido. Verifique e tente novamente.
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+
         </Row>
 
       <CheckboxGroup 
