@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Container, Table, Button, Badge } from 'react-bootstrap';
+import { Container, Table, Button, Badge, Alert } from 'react-bootstrap';
 
 interface Paciente {
   phone: string;
@@ -13,6 +13,8 @@ interface Paciente {
 export function PatientManagement() {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
     const data = localStorage.getItem('user_table');
@@ -25,10 +27,28 @@ export function PatientManagement() {
     setExpandedRow(expandedRow === phone ? null : phone);
   };
 
+  const handleDelete = (phone: string) => {
+    if (window.confirm(`Tem certeza que deseja excluir permanentemente este paciente?`)) {
+      const updatedPacientes = pacientes.filter(p => p.phone !== phone);
+      setPacientes(updatedPacientes);
+      localStorage.setItem('user_table', JSON.stringify(updatedPacientes));
+      setAlertMessage('Paciente excluído com sucesso');
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
+    }
+  };
+
+  
+
   return (
     <Container className="mt-4">
       <h2 className="mb-4">Relatório Completo de Pacientes</h2>
       
+      {showAlert && (
+        <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="mt-3">
+          {alertMessage}
+        </Alert>
+      )}
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -72,6 +92,15 @@ export function PatientManagement() {
                   >
                     {expandedRow === paciente.phone ? 'Ocultar' : 'Detalhes'}
                   </Button>
+
+                  <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleDelete(paciente.phone)}
+                  className="ms-2"
+                >
+                  <i className="bi bi-trash"></i> Excluir
+                </Button>
                 </td>
               </tr>
               
