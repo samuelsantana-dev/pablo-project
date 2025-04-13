@@ -119,6 +119,7 @@ export function RegistrationPatient() {
     //  await  RegisterPatient({data});
       salvarNoLocalStorage('user', data);
       salvarNoLocalStorage('patient_registration', data);
+      localStorage.setItem('phoneUser', data.phone);
      
      alert('Formulário enviado com sucesso!');
     handleReset();
@@ -213,9 +214,15 @@ export function RegistrationPatient() {
                 placeholder="dd/mm/aaaa"
                 required
                 className="input-field"
+                isInvalid={!!birthdate && new Date(birthdate) > new Date()}
               />
+              <Form.Control.Feedback type="invalid">
+                A data de nascimento não pode ser no futuro.
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
+
+
         </Row>
 
         <Row className="mb-4">
