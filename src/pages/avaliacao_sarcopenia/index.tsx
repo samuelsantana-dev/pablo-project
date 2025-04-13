@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import {
   Container,
@@ -8,9 +9,9 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { InterfaceRegistration } from '../../types';
 import { AvaliacaoData, exportarAvaliacaoParaPDF } from '../../utils/exportarPdf';
 import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
+import { InterfaceRegistration } from '../../types';
 
 export function SarcopeniaAssessment() {
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
@@ -146,6 +147,10 @@ export function SarcopeniaAssessment() {
                     sentarLevantar,
                     panturrilha,
                     sexo,
+                    ...patientData as AvaliacaoData,
+                   specificMedicines: Array.isArray(patientData.specificMedicines)
+                     ? patientData.specificMedicines.join(', ')
+                     : patientData.specificMedicines ?? '',
                   })
                 }
               >

@@ -1,8 +1,36 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import jsPDF from 'jspdf';
 
-interface AvaliacaoData {
-  // ... (mantenha sua interface existente, sem mudanças)
+export interface AvaliacaoData {
+  sexo?: string | 'não informado';
+  forcaPreensao?: number | null;
+  tug?: number | null;
+  anguloDeFase?: number | null;
+  sentarLevantar?: number | null;
+  panturrilha?: number | null;
+  laudo?: string | 'não informado';
+  name?: string | 'não informado';
+  email?: string | 'não informado';
+  phone?: string | 'não informado';
+  birthdate?: string | 'não informado';
+  age?: number | null;
+  height?: number | null;
+  weight?: number | null;
+  cpf?: string | 'não informado';
+  sleep?: string | 'não informado';
+  vision?: string | 'não informado';
+  hearing?: string | 'não informado';
+  alcoholic?: string | 'não informado';
+  smoker?: string | 'não informado';
+  medicines?: string | 'não informado';
+  specificMedicines?: string | string[] | 'não informado';
+  physicalActivity?: string | 'não informado';
+  fallHistory?: string | 'não informado';
+  reason?: string | 'não informado';
+  location?: string | 'não informado';
 }
+
+
 
 export function exportarAvaliacaoParaPDF(dados: AvaliacaoData) {
   const pdf = new jsPDF();
