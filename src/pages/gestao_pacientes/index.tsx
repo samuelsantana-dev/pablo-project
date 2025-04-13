@@ -1,177 +1,202 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Container, Button, Table, Alert, Spinner } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { InterfaceDadosAvaliacao, InterfaceRegistration, InterfaceSarcFAvaliacao } from '../../types';
-import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
-import './PatientManagement.css';
+import { Container, Table, Button, Badge } from 'react-bootstrap';
+
+interface Paciente {
+  phone: string;
+  name?: string;
+  registro?: any;
+  avaliacoes?: any[];
+  sarcopenia?: any[];
+}
 
 export function PatientManagement() {
-  const [pacientes, setPacientes] = useState<InterfaceRegistration[]>([]);
-  const [dadosAvaliacao, setDadosAvaliacao] = useState<InterfaceDadosAvaliacao[]>([]);
-  const [sarcFResult, setSarcFResult] = useState<InterfaceSarcFAvaliacao[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
-  console.log(dadosAvaliacao, sarcFResult)
-
-  // Columns configuration for the table
-  const columns = [
-    { key: 'name', label: 'Nome' },
-    { key: 'email', label: 'Email' },
-    { key: 'phone', label: 'Telefone' },
-    { key: 'age', label: 'Idade' },
-    { key: 'height', label: 'Altura (cm)' },
-    { key: 'weight', label: 'Peso (kg)' },
-    { key: 'sleep', label: 'Sono' },
-    { key: 'vision', label: 'Visão' },
-    { key: 'hearing', label: 'Audição' },
-    { key: 'alcoholic', label: 'Alcoólatra' },
-    { key: 'smoker', label: 'Fumante' },
-    { key: 'medicines', label: 'Medicamentos' },
-    { key: 'specificMedicines', label: 'Med. Específicos' },
-    { key: 'physicalActivity', label: 'Atividade Física' },
-    { key: 'fallHistory', label: 'Quedas' },
-    { key: 'reason', label: 'Motivo' },
-    { key: 'location', label: 'Localização' },
-  ];
+  const [pacientes, setPacientes] = useState<Paciente[]>([]);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        
-        // Load all data from localStorage
-        const patientData = loadLocalStorageData<InterfaceRegistration>('patient_registration');
-        const avaliacaoData = loadLocalStorageData<InterfaceDadosAvaliacao>('dadosAvaliacao');
-        const sarcFData = loadLocalStorageData<InterfaceSarcFAvaliacao>('sarcFResult');
-
-        setPacientes(patientData);
-        setDadosAvaliacao(avaliacaoData);
-        setSarcFResult(sarcFData);
-        
-      } catch (err) {
-        console.error('Error loading data:', err);
-        setError('Erro ao carregar dados dos pacientes');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    const data = localStorage.getItem('user_table');
+    if (data) {
+      setPacientes(JSON.parse(data));
+    }
   }, []);
 
-  // Helper function to load and parse localStorage data
-  const loadLocalStorageData = <T,>(key: string): T[] => {
-    const data = localStorage.getItem(key);
-    if (!data) return [];
-    
-    const parsed = JSON.parse(data);
-    return Array.isArray(parsed?.data) ? parsed.data : [parsed?.data].filter(Boolean);
+  const toggleRow = (phone: string) => {
+    setExpandedRow(expandedRow === phone ? null : phone);
   };
-
-  const handleDelete = (phone: string) => {
-    if (window.confirm('Tem certeza que deseja excluir este paciente?')) {
-      const updatedPatients = pacientes.filter(p => p.phone !== phone);
-      setPacientes(updatedPatients);
-      localStorage.setItem('patient_registration', JSON.stringify({ data: updatedPatients }));
-    }
-  };
-
-  if (loading) {
-    return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Carregando...</span>
-        </Spinner>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container className="mt-4">
-        <Alert variant="danger">{error}</Alert>
-      </Container>
-    );
-  }
 
   return (
-    <Container className="mt-4 patient-management-container">
-      <header className="text-center mb-4">
-        <h1>Gerenciamento de Pacientes</h1>
-        <p className="text-muted">Visualize e gerencie todos os pacientes cadastrados</p>
-      </header>
-
-      {pacientes.length === 0 ? (
-        <Alert variant="info" className="text-center">
-          Nenhum paciente cadastrado ainda.
-        </Alert>
-      ) : (
-        <>
-          <div className="table-responsive">
-            <Table striped bordered hover className="mt-4">
-              <thead>
+    <Container className="mt-4">
+      <h2 className="mb-4">Relatório Completo de Pacientes</h2>
+      
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Paciente</th>
+            <th>Contato</th>
+            <th>Idade</th>
+            <th>Avaliações</th>
+            <th>Testes Sarcopenia</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pacientes.map((paciente, index) => (
+            <>
+              <tr key={paciente.phone}>
+                <td>{index + 1}</td>
+                <td>
+                  {paciente.registro?.name || paciente.name || 'Não informado'}
+                </td>
+                <td>
+                  <div>Tel: {paciente.phone}</div>
+                  {paciente.registro?.email && <div>Email: {paciente.registro.email}</div>}
+                </td>
+                <td>{paciente.registro?.age || '-'}</td>
+                <td>
+                  <Badge bg={paciente.avaliacoes?.length ? 'primary' : 'secondary'}>
+                    {paciente.avaliacoes?.length || 0}
+                  </Badge>
+                </td>
+                <td>
+                  <Badge bg={paciente.sarcopenia?.length ? 'primary' : 'secondary'}>
+                    {paciente.sarcopenia?.length || 0}
+                  </Badge>
+                </td>
+                <td>
+                  <Button
+                    size="sm"
+                    variant={expandedRow === paciente.phone ? 'secondary' : 'primary'}
+                    onClick={() => toggleRow(paciente.phone)}
+                  >
+                    {expandedRow === paciente.phone ? 'Ocultar' : 'Detalhes'}
+                  </Button>
+                </td>
+              </tr>
+              
+              {expandedRow === paciente.phone && (
                 <tr>
-                  <th>#</th>
-                  {columns.map((col) => (
-                    <th key={col.key}>{col.label}</th>
-                  ))}
-                  <th>Ações</th>
+                  <td colSpan={7} className="p-0">
+                    <div className="p-3 bg-light">
+                      {/* Dados de Registro */}
+                      <h5 className="mb-3">Informações Cadastrais</h5>
+                      {paciente.registro ? (
+                        <div className="row">
+                          {Object.entries(paciente.registro).map(([key, value]) => (
+                            <div key={key} className="col-md-4 mb-2">
+                              <strong>{formatLabel(key)}:</strong> {formatValue(value)}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-muted">Nenhum dado cadastral disponível</div>
+                      )}
+                      
+                      {/* Avaliações Físicas */}
+                      <h5 className="mt-4 mb-3">Avaliações Sarcopenia</h5>
+                      {paciente.avaliacoes?.length ? (
+                        <Table striped bordered size="sm" className="mt-2">
+                          <thead>
+                            <tr>
+                              <th>Data</th>
+                              <th>Força Preensão</th>
+                              <th>TUG (s)</th>
+                              <th>Ângulo de Fase</th>
+                              <th>Sentar-Levantar</th>
+                              <th>Panturrilha</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {paciente.avaliacoes.map((avaliacao, idx) => (
+                              <tr key={idx}>
+                                <td>{avaliacao.date || '-'}</td>
+                                <td>{avaliacao.forcaPreensao}</td>
+                                <td>{avaliacao.tug}</td>
+                                <td>{avaliacao.anguloDeFase}</td>
+                                <td>{avaliacao.sentarLevantar}</td>
+                                <td>{avaliacao.panturrilha}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      ) : (
+                        <div className="text-muted">Nenhuma avaliação física registrada</div>
+                      )}
+                      
+                      {/* Testes de Sarcopenia */}
+                      <h5 className="mt-4 mb-3">Testes de Sarcopenia</h5>
+                      {paciente.sarcopenia?.length ? (
+                        <Table striped bordered size="sm" className="mt-2">
+                          <thead>
+                            <tr>
+                              <th>Data</th>
+                              <th>Pontuação</th>
+                              <th>Resultado</th>
+                              <th>Força</th>
+                              <th>Apoio</th>
+                              <th>Levantar</th>
+                              <th>Escadas</th>
+                              <th>Quedas</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {paciente.sarcopenia.map((teste, idx) => (
+                              <tr key={idx}>
+                                <td>{teste.date}</td>
+                                <td>{teste.pontuacao}</td>
+                                <td>{teste.predicao}</td>
+                                <td>{teste.respostas.forca}</td>
+                                <td>{teste.respostas.apoio}</td>
+                                <td>{teste.respostas.levantar}</td>
+                                <td>{teste.respostas.escadas}</td>
+                                <td>{teste.respostas.quedas}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      ) : (
+                        <div className="text-muted">Nenhum teste de sarcopenia registrado</div>
+                      )}
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {pacientes.map((paciente, index) => (
-                  <tr key={paciente.phone}>
-                    <td>{index + 1}</td>
-                    {columns.map((col) => (
-                      <td key={`${paciente.phone}-${col.key}`}>
-                        {formatCellValue(paciente[col.key as keyof InterfaceRegistration])}
-                      </td>
-                    ))}
-                    <td>
-                      <div className="d-flex gap-2 justify-content-center">
-                        <Button 
-                          variant="danger" 
-                          size="sm" 
-                          onClick={() => handleDelete(paciente.phone!)}
-                          title="Excluir"
-                        >
-                          Excluir
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
-
-          <div className="d-flex justify-content-between mt-4">
-            <Button
-              variant="primary"
-              onClick={() => navigate('/cadastro-paciente')}
-              className="me-2"
-            >
-              <i className="bi bi-plus-lg me-2"></i> Cadastrar Novo Paciente
-            </Button>
-            
-            <Button
-              variant="success"
-              onClick={() => exportarPacientesParaExcel(pacientes)}
-            >
-              <i className="bi bi-file-earmark-excel me-2"></i> Exportar para Excel
-            </Button>
-          </div>
-        </>
-      )}
+              )}
+            </>
+          ))}
+        </tbody>
+      </Table>
     </Container>
   );
 }
 
-// Helper function to format cell values
-const formatCellValue = (value: any): string => {
-  if (value === undefined || value === null) return '-';
+// Funções auxiliares
+function formatLabel(key: string): string {
+  const labels: Record<string, string> = {
+    name: 'Nome',
+    email: 'Email',
+    birthdate: 'Data Nasc.',
+    age: 'Idade',
+    height: 'Altura',
+    weight: 'Peso',
+    cpf: 'CPF',
+    sleep: 'Sono',
+    vision: 'Visão',
+    hearing: 'Audição',
+    alcoholic: 'Alcoólatra',
+    smoker: 'Fumante',
+    medicines: 'Medicamentos',
+    specificMedicines: 'Med. Específicos',
+    physicalActivity: 'Atividade Física',
+    fallHistory: 'Histórico Quedas',
+    reason: 'Motivo',
+    location: 'Localização'
+  };
+  return labels[key] || key;
+}
+
+function formatValue(value: any): string {
   if (Array.isArray(value)) return value.join(', ');
-  if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
+  if (value === null || value === undefined) return '-';
   return String(value);
-};
+}
