@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import '../../styles.css';
-import { RegisterPatient } from '../../api/routesPacientes';
+// import { RegisterPatient } from '../../api/routesPacientes';
+import CheckboxListInput from '../../components/checkbox_list';
+import CheckboxGroup from '../../components/checkbox_group';
+import { personalBackground, listOptions, yesNoOptions, specificListMedicines } from '../../list-option/options';
+import { useNavigate } from 'react-router-dom';
+import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -12,6 +17,56 @@ export function RegistrationPatient() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [cpf, setCpf] = useState('');
+  const [selectedOptionSleep, setSelectedOptionSleep] = useState<string>('');
+  const [selectedOptionVision, setSelectedOptionVision] = useState<string>('');
+  const [selectedOptionHearing, setSelectedOptionHearing] = useState<string>('');
+  const [selectedOptionAlcoholic, setSelectedOptionAlcoholic] = useState<string>('');
+  const [selectedOptionSmoker, setSelectedOptionSmoker] = useState<string>('');
+  const [medicines, setMedicines] = useState<string>('');
+  const [specificMedicines, setSpecificMedicines] = useState<string>('');
+  const [physicalActivity, setPhysicalActivity] = useState<string>('');
+  const [fallHistory, setFallHistory] = useState<string>('');
+  const [reason, setReason] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  
+  const handlesetsetFallHistorychange = (e: string) => setFallHistory(e);
+  const handlesetPhysicalActivitychange = (e: string) => setPhysicalActivity(e);
+  const handleSpecificMedicineschange = (e: string) => setSpecificMedicines(e);
+  const handleSelectionChangeAlcoholic = (e: string) => setSelectedOptionAlcoholic(e);
+  const handleSelectionChangeSmoker = (e: string) => setSelectedOptionSmoker(e);
+  const handleSelectionChangeHearing = (e: string) => setSelectedOptionHearing(e);
+  const handleSelectionChangeVision = (e: string) => setSelectedOptionVision(e);
+  const handleSelectionChangeSleep = (e: string) => setSelectedOptionSleep(e);
+  
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    selectedOption: '',
+    selectedOptions: [] as string[],});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox') {
+      setFormData(prevData => {
+        // Para checkboxes, atualizamos o array selectedOptions
+        const newValues = checked
+          ? [...prevData.selectedOptions, value]
+          : prevData.selectedOptions.filter(v => v !== value);
+        
+        return {
+          ...prevData,
+          selectedOptions: newValues,
+        };
+      });
+    } else {
+      // Para outros inputs (text, select, etc.)
+      setFormData(prevData => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
 
   useEffect(() => {
     if (birthdate) {
@@ -32,16 +87,42 @@ export function RegistrationPatient() {
     }
     return age;
   };
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data = { name, email, phone, birthdate, age, height, cpf, weight };
+    // Todos esses dados tem que estar na tabela
+    const data = {
+      name,
+      email,
+      phone,
+      birthdate,
+      age,
+      height,
+      cpf,
+      weight,
+      sleep: selectedOptionSleep,
+      vision: selectedOptionVision,
+      hearing: selectedOptionHearing,
+      alcoholic: selectedOptionAlcoholic,
+      smoker: selectedOptionSmoker,
+      medicines,
+      specificMedicines: specificMedicines ? specificMedicines.split(',') : [],
+      physicalActivity,
+      fallHistory,
+      reason,
+      location
+    };    
     console.log(data);
     try {
       
-     await  RegisterPatient({data});
+    //  await  RegisterPatient({data});
+      salvarNoLocalStorage('user', data);
+      salvarNoLocalStorage('patient_registration', data);
+     
      alert('Formulário enviado com sucesso!');
     handleReset();
+    navigate('/laudo-sarcopenia');
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
       alert('Erro ao enviar o formulário. Tente novamente.');
@@ -57,14 +138,25 @@ export function RegistrationPatient() {
     setHeight('');
     setWeight('');
     setCpf('');
+    setSelectedOptionSleep('');
+    setSelectedOptionVision('');
+    setSelectedOptionHearing('');
+    setSelectedOptionAlcoholic('');
+    setSelectedOptionSmoker('');
+    setMedicines('');
+    setSpecificMedicines('');
+    setPhysicalActivity('');
+    setFallHistory('');
+    setReason('');
+    setLocation('');
     localStorage.removeItem('userFormData');
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center min-vh-100">
+    <Container className="d-flex justify-content-center align-items-center">
       <Form
         onSubmit={handleSubmit}
-        className="w-75 p-5 bg-white shadow-lg rounded border border-0 form-container"
+        className="w-100 w-md-75 p-4 p-md-5 bg-white shadow-lg rounded border border-0 form-container"
       >
         <h2 className="text-center mb-4 text-primary">Cadastro de Paciente</h2>
 
@@ -182,6 +274,126 @@ export function RegistrationPatient() {
             </Form.Group>
           </Col>
         </Row>
+
+      <CheckboxGroup 
+          label="Antecedentes Pessoais"
+          name="selectedOptions"
+          values={formData.selectedOptions}
+          onChange={handleChange}
+          options={personalBackground}
+          inline
+        />
+
+        <CheckboxListInput
+         label="Sono"
+         name="myRadioGroupSleep"
+         options={listOptions}
+         selectedValue={selectedOptionSleep}
+         onChange={handleSelectionChangeSleep}
+        />
+
+      <CheckboxListInput
+         label="Visão"
+         name="myRadioGroupVision"
+         options={listOptions}
+         selectedValue={selectedOptionVision}
+         onChange={handleSelectionChangeVision}
+        />
+
+        <CheckboxListInput
+         label="Audição"
+         name="myRadioGroupHearing"
+         options={listOptions}
+         selectedValue={selectedOptionHearing}
+         onChange={handleSelectionChangeHearing}
+        /> 
+
+        <CheckboxListInput
+         label="Fumante"
+         name="myRadioGroupSmoker"
+         options={yesNoOptions}
+         selectedValue={selectedOptionSmoker}
+         onChange={handleSelectionChangeSmoker}
+        />
+
+         <CheckboxListInput
+         label="Etilista"
+         name="myRadioGroupAlcoholic"
+         options={yesNoOptions}
+         selectedValue={selectedOptionAlcoholic}
+         onChange={handleSelectionChangeAlcoholic}
+        />
+
+        <div>
+        <h4 className="form-label">Medicamentos</h4>
+          <Form.Group controlId="medicines">
+              <Form.Label className="form-label">Medicamentos em uso:</Form.Label>
+              <Form.Control
+                type="text"
+                value={medicines}
+                onChange={(e) => setMedicines(e.target.value)}
+                placeholder="Liste os medicamentos em uso"
+                required
+                className="input-field"
+              />
+            </Form.Group>
+
+            <CheckboxListInput
+                label="Medicamentos especificos separe por ,"
+                name="specificMedicines"
+                options={specificListMedicines}
+                selectedValue={specificMedicines}
+                onChange={handleSpecificMedicineschange}
+              />
+        </div>
+
+        <div>
+        <h5>Você pratica algum tipo de atividade física?
+        </h5>
+            <CheckboxListInput
+                label="Atividade Física"
+                name="physicalActivity"
+                options={yesNoOptions}
+                selectedValue={physicalActivity}
+                onChange={handlesetPhysicalActivitychange}
+              />
+        </div>
+
+        <div>
+        <h5>Sofreu alguma queda nos últimos 12 meses?
+        </h5>
+            <CheckboxListInput
+                label="Histórico de Quedas?"
+                name="physicalActivityQ"
+                options={yesNoOptions}
+                selectedValue={fallHistory}
+                onChange={handlesetsetFallHistorychange}
+              />
+        </div>
+
+        <Form.Group controlId="medicines">
+              <Form.Label className="form-label">Motivo:              </Form.Label>
+              <Form.Control
+                type="text"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                placeholder="Liste os medicamentos em uso"
+                required
+                className="input-field"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="location">
+              <Form.Label className="form-label">Local:</Form.Label>
+              <Form.Control
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Informe o local"
+                required
+                className="input-field"
+              />
+            </Form.Group>
 
         <div className="d-flex justify-content-between mt-3">
           <Button type="submit" variant="primary" className="w-48 custom-btn">

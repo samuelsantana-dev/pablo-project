@@ -1,0 +1,56 @@
+.bg-gradient-pixeon {
+    background: linear-gradient(90deg, #2bdacb 0%, #6b6bff 100%);
+  }
+  
+  .home-card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 24px;
+    max-width: 500px;
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Estilo dos botões */
+  .btn-custom {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-custom:hover {
+    background-color: #00c3c3;
+    color: white;
+  }
+  
+  /* Responsividade para telas menores */
+  @media (max-width: 576px) {
+    .home-card {
+      padding: 24px;
+      margin: 0 16px;
+      border-radius: 16px;
+    }
+  
+    .btn-custom {
+      font-size: 1rem;
+      padding: 10px 20px;
+      width: 100%;
+    }
+  
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+  
+  /* Animação */
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
