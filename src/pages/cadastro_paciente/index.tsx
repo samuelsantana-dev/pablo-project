@@ -6,7 +6,7 @@ import CheckboxListInput from '../../components/checkbox_list';
 import CheckboxGroup from '../../components/checkbox_group';
 import { personalBackground, listOptions, yesNoOptions, specificListMedicines } from '../../list-option/options';
 import { useNavigate } from 'react-router-dom';
-import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
+import { salvarNoLocalStorage, saveUnicData } from '../../utils/saveLocalStorage';
 
 export function RegistrationPatient() {
   const [name, setName] = useState('');
@@ -119,7 +119,7 @@ export function RegistrationPatient() {
     //  await  RegisterPatient({data});
       salvarNoLocalStorage('user', data);
       salvarNoLocalStorage('patient_registration', data);
-      localStorage.setItem('phoneUser', data.phone);
+      saveUnicData("phoneUser", data.phone);
      
      alert('Formulário enviado com sucesso!');
     handleReset();
