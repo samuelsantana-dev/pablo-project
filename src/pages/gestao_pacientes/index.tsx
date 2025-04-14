@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Container, Table, Button, Badge, Alert } from 'react-bootstrap';
 
+import { exportarPacientesParaExcel } from '../../utils/exportarExcel';
+
 interface Paciente {
   phone: string;
   name?: string;
@@ -38,11 +40,37 @@ export function PatientManagement() {
     }
   };
 
+  const handleExport = () => {
+    const pacientesComRegistro = pacientes
+      .filter(paciente => paciente.registro)
+      .map(paciente => paciente.registro);
+    
+    if (pacientesComRegistro.length === 0) {
+      setAlertMessage('Nenhum paciente com registro completo para exportar');
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
+      return;
+    }
+    
+    exportarPacientesParaExcel(pacientesComRegistro);
+  };
+
   
 
   return (
     <Container className="mt-4">
-      <h2 className="mb-4">Relatório Completo de Pacientes</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Relatório Completo de Pacientes</h2>
+        <Button 
+          variant="success" 
+          onClick={handleExport}
+        >
+          <i className="bi bi-file-excel me-2"></i> Exportar Excel
+        </Button>
+        
+      </div>
+
+      
       
       {showAlert && (
         <Alert variant="success" onClose={() => setShowAlert(false)} dismissible className="mt-3">
@@ -229,3 +257,4 @@ function formatValue(value: any): string {
   if (value === null || value === undefined) return '-';
   return String(value);
 }
+
