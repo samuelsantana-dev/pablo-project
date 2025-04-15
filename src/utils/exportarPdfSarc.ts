@@ -26,6 +26,13 @@ export function exportarSarcFParaPDF(
   pdf.setFontSize(16);
   pdf.text('Avaliação SARC-F', 105, 20, { align: 'center' });
 
+// calcular a recomendação
+const recomendacao = resultado.pontuacao >= 4
+    ? 'Risco de Sarcopenia Detectado. Recomenda-se avaliação médica adicional.'
+    : 'Risco de Sarcopenia Não Detectado. Mantenha acompanhamento regular.';
+
+
+
   pdf.setFontSize(14);
   let y = 30;
   pdf.text('Informações do Paciente:', 20, y); y += 10;
@@ -65,6 +72,9 @@ export function exportarSarcFParaPDF(
   pdf.setFontSize(12);
   pdf.text(`Pontuação Total: ${resultado.pontuacao}`, 20, y); y += 8;
   pdf.text(`Predição de Sarcopenia: ${resultado.predicao}`, 20, y); y += 10;
+
+  pdf.setFontSize(12);
+  pdf.text(`Recomendação: ${recomendacao}`, 20, y); y += 10;
 
   pdf.setFontSize(14);
   pdf.text('Respostas:', 20, y); y += 10;

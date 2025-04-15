@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Container,
   Form,
@@ -14,6 +16,10 @@ import { salvarNoLocalStorage } from '../../utils/saveLocalStorage';
 import { InterfaceRegistration } from '../../types';
 
 export function SarcopeniaAssessment() {
+
+  const navigate = useNavigate();
+
+
   const [forcaPreensao, setForcaPreensao] = useState<number | undefined>();
   const [tug, setTug] = useState<number | undefined>();
   const [anguloDeFase, setAnguloDeFase] = useState<number | undefined>();
@@ -134,28 +140,43 @@ export function SarcopeniaAssessment() {
             </ul>
     
             <div className="d-flex justify-content-center gap-3 mt-4">
-              <Button variant="primary" onClick={() => window.location.reload()}>
-                Finalizar Avaliação
+            <Button 
+                variant="outline-primary" 
+                onClick={() => navigate('/sarc-form')}
+              >
+                Avançar para SARC-F
               </Button>
               <Button
-                variant="primary"
-                onClick={() =>
-                  exportarAvaliacaoParaPDF({
-                    forcaPreensao,
-                    tug,
-                    anguloDeFase,
-                    sentarLevantar,
-                    panturrilha,
-                    sexo,
-                    ...patientData as AvaliacaoData,
-                   specificMedicines: Array.isArray(patientData.specificMedicines)
-                     ? patientData.specificMedicines.join(', ')
-                     : patientData.specificMedicines ?? '',
-                  })
-                }
-              >
-                Imprimir PDF
-              </Button>
+  variant="primary"
+  onClick={() => {
+    const criteriosTexto = criterios.map((item) =>
+      item.replace(/<[^>]+>/g, '') // remove HTML caso tenha
+    ).join('\n\n');
+
+    const conclusaoTexto = sarcopenia
+      ? 'Possível risco de sarcopenia identificado. Recomenda-se avaliação adicional.'
+      : 'Todos os parâmetros estão dentro da normalidade.';
+
+    const laudoCompleto = `${criteriosTexto}\n\nConclusão: ${conclusaoTexto}`;
+
+    exportarAvaliacaoParaPDF({
+      forcaPreensao,
+      tug,
+      anguloDeFase,
+      sentarLevantar,
+      panturrilha,
+      sexo,
+      laudo: laudoCompleto,
+      ...patientData as AvaliacaoData,
+      specificMedicines: Array.isArray(patientData.specificMedicines)
+        ? patientData.specificMedicines.join(', ')
+        : patientData.specificMedicines ?? '',
+    });
+  }}
+>
+  Imprimir PDF
+</Button>
+
             </div>
           </div>
         </Card.Body>
