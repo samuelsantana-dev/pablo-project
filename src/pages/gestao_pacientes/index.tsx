@@ -41,19 +41,16 @@ export function PatientManagement() {
   };
 
   const handleExport = () => {
-    const pacientesComRegistro = pacientes
-      .filter(paciente => paciente.registro)
-      .map(paciente => paciente.registro);
-    
-    if (pacientesComRegistro.length === 0) {
-      setAlertMessage('Nenhum paciente com registro completo para exportar');
+    if (pacientes.length === 0) {
+      setAlertMessage('Nenhum paciente disponível para exportar');
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 3000);
       return;
     }
-    
-    exportarPacientesParaExcel(pacientesComRegistro);
+  
+    exportarPacientesParaExcel(pacientes);
   };
+  
 
   
 
