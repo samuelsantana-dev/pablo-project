@@ -209,9 +209,9 @@ export const SarcFForm: React.FC = () => {
   variant="primary"
   onClick={() => {
     // Verifique a recomendação com base na pontuação
-    const conclusao = result.pontuacao >= 4
-      ? 'Risco de Sarcopenia Detectado. Recomenda-se avaliação médica adicional.'
-      : 'Risco de Sarcopenia Não Detectado. Mantenha acompanhamento regular.';
+    // const conclusao = result.pontuacao >= 4
+    //   ? 'Risco de Sarcopenia Detectado. Recomenda-se avaliação médica adicional.'
+    //   : 'Risco de Sarcopenia Não Detectado. Mantenha acompanhamento regular.';
 
     exportarSarcFParaPDF(patientData, result, questions);
   }}
