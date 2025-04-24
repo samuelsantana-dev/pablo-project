@@ -106,6 +106,40 @@ export function SarcopeniaAssessment() {
     
     salvarNoLocalStorage('dadosAvaliacao', dados);
 
+    // 1. Função para verificar risco com base nos valores
+function verificarRiscoSarcopenia(
+  anguloDeFase: number,
+  forcaPreensao: number,
+  panturrilha: number,
+  sentarLevantar: number,
+  tug: number,
+  sexo: string
+): boolean {
+  const faseLimite = sexo === 'Masculino' ? 5.25 : 4.54;
+  const preensaoLimite = sexo === 'Masculino' ? 27 : 16; // padrão EWGSOP2
+  const panturrilhaLimite = 31;
+  const sentarLevantarLimite = 15;
+  const tugLimite = 19;
+
+  return (
+    anguloDeFase < faseLimite ||
+    forcaPreensao < preensaoLimite ||
+    panturrilha < panturrilhaLimite ||
+    sentarLevantar > sentarLevantarLimite ||
+    tug > tugLimite
+  );
+}
+
+const risco = verificarRiscoSarcopenia(
+  anguloDeFase,
+  forcaPreensao,
+  panturrilha,
+  sentarLevantar,
+  tug,
+  sexo
+);
+
+
     setLaudo(
       <Card className="mt-4 shadow-sm border-0">
         <Card.Body>
@@ -121,12 +155,21 @@ export function SarcopeniaAssessment() {
             ))}
           </ul>
     
-          <Alert variant={sarcopenia ? 'danger' : 'success'}>
-            <strong>Conclusão:</strong>{' '}
-            {sarcopenia
-              ? 'Possível risco de sarcopenia identificado. Recomenda-se avaliação adicional.'
-              : 'Todos os parâmetros estão dentro da normalidade.'}
-          </Alert>
+          <div className="mb-3">
+  <p><strong>Resumo:</strong></p>
+  <p>
+    Foram analisados cinco critérios: ângulo de fase, força de preensão manual, circunferência da panturrilha, teste de sentar e levantar e TUG.
+    Abaixo estão as interpretações específicas de cada parâmetro.
+  </p>
+</div>
+
+<Alert variant={risco ? 'danger' : 'success'}>
+  <strong>Conclusão:</strong>{' '}
+  {risco
+    ? 'Possível risco de sarcopenia identificado. Recomenda-se avaliação adicional.'
+    : 'Sem risco de sarcopenia. Todos os parâmetros estão dentro da normalidade, indicando boa força muscular, mobilidade e composição corporal.'}
+</Alert>
+
     
           <div className="mt-4">
             <h6 className="text-muted">Referências:</h6>
