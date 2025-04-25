@@ -30,8 +30,6 @@ export interface AvaliacaoData {
   location?: string | 'não informado';
 }
 
-
-
 export function exportarAvaliacaoParaPDF(dados: AvaliacaoData) {
   const pdf = new jsPDF();
   let y = 20; // Posição vertical inicial
@@ -78,7 +76,7 @@ export function exportarAvaliacaoParaPDF(dados: AvaliacaoData) {
     `Atividade Física: ${dados.physicalActivity || 'Não informado'}`,
     `Histórico de Quedas: ${dados.fallHistory || 'Não informado'}`,
     `Motivo da Avaliação: ${dados.reason || 'Não informado'}`,
-    `Local da Avaliação: ${dados.location || 'Não informado'}`
+    `Local da Avaliação: ${dados.location || 'Não informado'}`,
   ];
   addText(pacienteInfo, 20);
 
@@ -93,7 +91,7 @@ export function exportarAvaliacaoParaPDF(dados: AvaliacaoData) {
     `TUG: ${dados.tug !== undefined ? dados.tug + ' s' : 'Não avaliado'}`,
     `Ângulo de Fase: ${dados.anguloDeFase !== undefined ? dados.anguloDeFase + '°' : 'Não avaliado'}`,
     `Sentar e Levantar: ${dados.sentarLevantar !== undefined ? dados.sentarLevantar + ' s' : 'Não avaliado'}`,
-    `Panturrilha: ${dados.panturrilha !== undefined ? dados.panturrilha + ' cm' : 'Não avaliado'}`
+    `Panturrilha: ${dados.panturrilha !== undefined ? dados.panturrilha + ' cm' : 'Não avaliado'}`,
   ];
   addText(resultados, 20);
 
